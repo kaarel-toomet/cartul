@@ -39,7 +39,7 @@ func generate(cx,cy):
 				cell = 1
 			#if get_cell(lx,ly) == -1:
 			set_cell(lx,ly,cell)
-			$generated.set_cell(x,y,0)
+			#$generated.set_cell(x,y,0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

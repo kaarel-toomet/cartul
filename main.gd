@@ -9,7 +9,7 @@ var tile_size = Vector2(16,16)
 var chunk_size = Vector2(16,16)
 var gen_dist = Vector2(1,1)
 
-var breakto = {-1:-1,0:2,1:2,2:3,3:-1}
+var breakto = {-1:-1,0:2,1:2,2:3,3:-1, 4:2}
 
 #Tile ids
 #-1: void, 0: asdfstone, 1: grass, 2:sand, 3:water
@@ -38,7 +38,7 @@ func set_map(new_map):
 	map.fix_invalid_tiles()
 
 func set_map_no_load(new_map):
-	save_current_map()
+	#save_current_map()
 	map_id = new_map
 	map.queue_free()
 	map = map_scene_to_id[new_map].instance()
@@ -49,8 +49,9 @@ func set_map_no_load(new_map):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("d3rewr3wqsadf")
-	seed(seed_)
+	
+	$ui/hotbar.rect_scale = scale
+	
 	map = earth.instance()
 	map.scale = scale
 	map.cell_size = tile_size
@@ -60,14 +61,14 @@ func _ready():
 	hullmyts.scale = scale
 	add_child(hullmyts)
 	
-	load_map()
+	load_world()
+	seed(seed_)
 	map.fix_invalid_tiles()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	
-	$ui.scale = scale
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
@@ -92,16 +93,15 @@ func _process(delta):
 		for cy in range(pcy-gen_dist.y,pcy+gen_dist.y+1):
 			if map.get_node("generated").get_cell(cx,cy) == -1:
 				map.generate(cx,cy)
-				print("434erdtrf")
 				map.get_node("generated").set_cell(cx,cy,0)
 				
 				
 
 func save_current_map():
-	print("qqqqqqsdfgh")
+	#print("qqqqqqsdfgh")
 	var chunks := File.new()
 	chunks.open("res://world/" + string_map_ids[map_id],File.WRITE)
-	print("aqqqq")
+	#print("aqqqq")
 	for chunk in map.get_node("generated").get_used_cells():
 		chunks.store_double(chunk.x)
 		chunks.store_double(chunk.y)
@@ -114,22 +114,37 @@ func save_current_map():
 	#$player.position.x=-999
 	for s in range(20):
 		
-		data.store_16($hud/hotbar.tiles[s])
+		data.store_16($ui/hotbar.tiles[s])
 		#$player.position.x=300*s
-		data.store_16($hud/hotbar.amounts[s])
-		
+		data.store_16($ui/hotbar.amounts[s])
+	#$player.position.x=999
 	data.store_64(seed_)
-	data.store_double(get_parent().get_node("hullmyts").spawnpoint.x)
-	data.store_double(get_parent().get_node("hullmyts").spawnpoint.y)
-	#data.store_64(int(get_parent().get_node("hud").itime))
-	data.store_double(get_parent().get_node("hullmyts").position.x)
-	data.store_double(get_parent().get_node("hullmyts").position.y)
+	data.store_double($player.spawnpoint.x)
+	data.store_double($player.spawnpoint.y)
+	data.store_double($player.position.x)
+	data.store_double($player.position.y)
 	data.store_16(map_id)
 	data.close()
 	
 	
-func load_map():
-	print("da111111")
+func load_world():
+	
+	var data := File.new()
+	data.open("res://world/data",File.READ)
+	if data.file_exists("res://world/data"):
+		for s in range(20):
+			$ui/hotbar.tiles[s] = data.get_16()
+			$ui/hotbar.amounts[s] = data.get_16()
+		seed_ = data.get_64()
+		$player.spawnpoint.x = data.get_double()
+		$player.spawnpoint.y = data.get_double()
+		$player.position.x = data.get_double()
+		$player.position.y = data.get_double()
+		set_map_no_load(data.get_16())
+	else:
+		print("data file not found")
+	data.close()
+	
 	var chunks := File.new()
 	chunks.open("res://world/" + string_map_ids[map_id],File.READ)
 	
@@ -147,29 +162,25 @@ func load_map():
 	else:
 		print("chunks file not found")
 		
-	var data := File.new()
-	data.open("res://world/data",File.READ)
-	if data.file_exists("res://world/data.gwrld"):
-		#get_parent().get_node("hullmyts").health = data.get_8()
-		#get_parent().get_node("hud").kuld = data.get_8()
-		#get_parent().get_node("hud").kolliv = data.get_8()
-		for s in range(20):
-			$hud/hotbar.tiles[s] = data.get_16()
-			$hud/hotbar.amounts[s] = data.get_16()
-		seed_ = data.get_64()
-		get_parent().get_node("hullmyts").spawnpoint.x = data.get_double()
-		get_parent().get_node("hullmyts").spawnpoint.y = data.get_double()
-		get_parent().get_node("hullmyts").position.x = data.get_double()
-		get_parent().get_node("hullmyts").position.y = data.get_double()
-		set_map_no_load(data.get_16())
-		#get_parent().get_node("hud").itime = data.get_64()
-	else:
-		print("data file not found")
-	data.close()
+func load_map():
+	var chunks := File.new()
+	chunks.open("res://world/" + string_map_ids[map_id],File.READ)
 	
+	if chunks.file_exists("res://world/" + string_map_ids[map_id]):
+		while chunks.get_position() != chunks.get_len():
+			var chunk := Vector2()
+			chunk.x = chunks.get_double()
+			chunk.y = chunks.get_double()
+			map.get_node("generated").set_cellv(chunk,0)
+			for x in range(chunk_size.x):
+				for y in range(chunk_size.y):
+					map.set_cell(x+chunk.x*chunk_size.x,y+chunk.y*chunk_size.x,chunks.get_16())
+		chunks.close()
+		
+	else:
+		print("chunks file not found")
 	
 	
 func _notification(what):
-	print("dasdsdf")
 	if what == NOTIFICATION_EXIT_TREE:
 		save_current_map()

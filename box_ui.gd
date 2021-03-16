@@ -2,16 +2,13 @@ extends HBoxContainer
 
 
 
-var tiles = [4,1,2,3,0,7,8,1,1,1, 0,-1,-1,-1,-1,9,0,0,0,0]
-var amounts=[99,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
+var tiles = [0,1,2,3,4]
+var amounts=[8,2,55,13,5]
 
 var selected = 0
 var stack_limit = 5
 
-onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5,
-			 $slot6, $slot7, $slot8, $slot9, $slot10,
-			 $slot11, $slot12, $slot13, $slot14, $slot15,
-			 $slot16, $slot17, $slot18, $slot19, $slot20]
+onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5]
 var textures = []
 
 
@@ -25,15 +22,6 @@ func _ready():
 	textures.append(load("res://assets/box.png"))
 	textures.append(null)
 
-
-func _input(event):
-	if event is InputEventMouseButton:
-		if event.is_pressed():
-			if event.button_index == BUTTON_WHEEL_UP:
-				selected =  posmod(selected-1,20)
-			if event.button_index == BUTTON_WHEEL_DOWN:
-				selected =  posmod(selected+1,20)
-				#collect(21)
 				
 func can_get(item):
 	for s in range(len(slots)):
@@ -77,7 +65,7 @@ func _process(delta):
 			s.get_node("texture").texture = null
 		s.get_node("amount").text = str(amounts[i])
 		i+=1
+	if Input.is_action_just_pressed("E"): queue_free()
 		
-	slots[selected].color = Color(0,0,0)
 		
 		

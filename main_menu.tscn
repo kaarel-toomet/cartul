@@ -20,6 +20,9 @@ margin_bottom = -56.0
 text = "cartul"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Button" type="Button" parent="."]
 anchor_left = 0.5

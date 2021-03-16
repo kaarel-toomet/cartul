@@ -20,6 +20,7 @@ func _ready():
 	noise.lacunarity = 2
 
 func generate(cx,cy):
+	if $generated.get_cell(cx,cy) == -1: return
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):
 			var lx = chunk_size.x*cx+x
@@ -32,7 +33,9 @@ func generate(cx,cy):
 			if noiseval >= 0.1:
 				cell = 0
 
-			set_cell(lx,ly,cell)
+			if get_cell(lx,ly) == -1:
+				set_cell(lx,ly,cell)
+			$generated.set_cell(x,y,0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

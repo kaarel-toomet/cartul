@@ -3,27 +3,24 @@ extends HBoxContainer
 
 
 var tiles = [4,1,2,3,0,7,8,1,1,1, 0,-1,-1,-1,-1,9,0,0,0,0]
-var amounts=[99,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
+var amounts=[5,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
 
 var selected = 0
 var stack_limit = 5
 
+var max_item_id = 4
+
+var slot_num = 20
 onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5,
 			 $slot6, $slot7, $slot8, $slot9, $slot10,
 			 $slot11, $slot12, $slot13, $slot14, $slot15,
 			 $slot16, $slot17, $slot18, $slot19, $slot20]
-var textures = []
-
-
-
 func _ready():
-	
-	textures.append(load("res://assets/asdf.png"))
-	textures.append(load("res://assets/grass.png"))
-	textures.append(load("res://assets/sand.png"))
-	textures.append(load("res://assets/water.png"))
-	textures.append(load("res://assets/box.png"))
-	textures.append(null)
+	for s in range(slot_num):
+		slots[s].item = tiles[s]
+		slots[s].amount = amounts[s]
+		slots[s].id = s
+		slots[s].max_item_id = max_item_id
 
 
 func _input(event):
@@ -35,49 +32,60 @@ func _input(event):
 				selected =  posmod(selected+1,20)
 				#collect(21)
 				
-func can_get(item):
+
+func can_get(item, amount):
+	var n = amount
 	for s in range(len(slots)):
-		if tiles[s] == -1:
-			return s
-		if tiles[s] == item and amounts[s] < stack_limit:
-			return s
+		if tiles[s] in [-1, item]:
+			n -= stack_limit - amounts[s]
+		if n <= 0: return true
+	return false
 	
-	return -1
 
-func get_item(item):
-	var s = can_get(item)
-	if s == -1 or item == -1: return false
-	amounts[s] += 1
-	tiles[s] = item
-	return true
+func get_item(item, amount):
+	if item == -1 or !can_get(item, amount): return false
+	var n = amount
+	for s in range(slot_num):
+		if tiles[s] in [-1, item]:
+			var num = amounts[s]
+			set_item(s, item, num + min(n, stack_limit - num))
+			n -= min(n, stack_limit - num)
+		if n <= 0: return true
+	print("something went wrong in get_item")
+	return false
 
-func has(item):
-	return tiles.find(item)
+func can_lose(item, amount):
+	var n = amount
+	for s in range(slot_num):
+		if s == item:
+			n -= amounts[s]
+		if n <= 0: return true
+	return false
 
-func lose(item, amount):
-	var s = has(item)
-	if s == -1 or amounts[s] < amount: return false
-	amounts[s] -= amount
-	return true
+func lose_item(item, amount):
+	if item == -1 or !can_lose(item, amount): return false
+	var n = amount
+	for s in range(slot_num):
+		if tiles[slot_num-s-1] == item:
+			var num = amounts[slot_num-s-1]
+			print(slot_num-s-1)
+			set_item(slot_num-s-1, item, num - min(n, num))
+			n -= min(n, num)
+		if n <= 0: return true
+	print("something went wrong in 'lose_item")
+	return false
+
+func set_item(slot_id, item, amount):
+	tiles[slot_id] = item
+	amounts[slot_id] = amount
+	slots[slot_id].item = item
+	slots[slot_id].amount = amount
 
 
 func _process(delta):
-	#render slots
-	var i=0
+	
 	for s in slots:
 		s.color = Color(0.5, 0.5, 0.5)
-		
-		if amounts[i] <= 0:
-			tiles[i] = -1
-		if tiles[i] == -1:
-			amounts[i] = 0
-		if tiles[i] < len(textures) and tiles[i] >= 0:
-			s.get_node("texture").texture = textures[tiles[i]]
-		else:
-			s.get_node("texture").texture = null
-		s.get_node("amount").text = str(amounts[i])
-		i+=1
-		
 	slots[selected].color = Color(0,0,0)
 		
 		

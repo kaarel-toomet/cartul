@@ -9,6 +9,9 @@ var tile_size = Vector2(16,16)
 var chunk_size = Vector2(16,16)
 var gen_dist = Vector2(1,1)
 
+var max_item_id = 4
+var stack_limit = 5
+
 var breakto = {-1:-1,0:2,1:2,2:3,3:-1, 4:2}
 
 #Tile ids
@@ -50,7 +53,12 @@ func set_map_no_load(new_map):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	
+	
+	$ui.stack_limit = 5
+	$ui.max_item_id = max_item_id
 	$ui/hotbar.rect_scale = scale
+	$ui/held_item.rect_scale = scale
 	
 	map = earth.instance()
 	map.scale = scale
@@ -68,20 +76,26 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
+	#$ui/held_item.position = get_global_mouse_position()# + get_viewport_rect().size*0.5
+	#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
 	if Input.is_action_just_pressed("lclick"):
+		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
-		if $ui/hotbar.get_item(map.get_cell(mx,my)):
-				map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
+		if $ui/hotbar.get_item(map.get_cell(mx,my), 1):
+			#print("sssssssssssssssssss")
+			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
+			
 	if Input.is_action_just_pressed("rclick"):
 		var s = $ui/hotbar.selected
 		var b = $ui/hotbar.tiles[s]
-		if !(b == -1 or map.get_cell(mx,my) != breakto[b]):
-			$ui/hotbar.amounts[s] -= 1
+		if b != -1 and map.get_cell(mx,my) == breakto[b]:
+			$ui/hotbar.set_item(s,b,$ui/hotbar.amounts[s]-1)
 			map.set_cell(mx,my,b)
+		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
+		
 	if Input.is_action_just_pressed("J"):
 		if map_id == 0:
 			set_map(1)
@@ -133,8 +147,7 @@ func load_world():
 	data.open("res://world/data",File.READ)
 	if data.file_exists("res://world/data"):
 		for s in range(20):
-			$ui/hotbar.tiles[s] = data.get_16()
-			$ui/hotbar.amounts[s] = data.get_16()
+			$ui/hotbar.set_item(s,data.get_16(),data.get_16())
 		seed_ = data.get_64()
 		$player.spawnpoint.x = data.get_double()
 		$player.spawnpoint.y = data.get_double()

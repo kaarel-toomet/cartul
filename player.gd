@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 
 
+
 var speed = 6
 #var scale = 2
 var spawnpoint = Vector2(0,0)
@@ -32,6 +33,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("E") and get_parent().map.get_cellv(map_pos) == 4:
 		var ui = box_ui.instance()
 		ui.rect_scale = scale
+		ui.stack_limit = get_parent().stack_limit
+		ui.max_item_id = get_parent().max_item_id
 		#ui.anchor_bottom /= scale.y
 		#ui.anchor_top /= scale.y
 		#ui.anchor_right /= scale.x

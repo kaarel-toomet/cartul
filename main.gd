@@ -98,15 +98,15 @@ func _process(delta):
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
-	if Input.is_action_just_pressed("lclick") and mpos.y > 24:
-		#print("b")
+	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 24:
+		print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
 		if $ui/hotbar.get_item(map.get_cell(mx,my), 1):
 			#print("sssssssssssssssssss")
 			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
 			
-	if Input.is_action_just_pressed("rclick") and mpos.y > 24:
+	if Input.is_action_just_pressed("rclick") and get_viewport().get_mouse_position().y > 24:
 		var s = $ui/hotbar.selected
 		var b = $ui/hotbar.tiles[s]
 		if b != -1 and map.get_cell(mx,my) == breakto[b]:

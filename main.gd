@@ -9,6 +9,8 @@ var tile_size = Vector2(16,16)
 var chunk_size = Vector2(16,16)
 var gen_dist = Vector2(1,1)
 
+var paused = false
+
 var max_item_id = 4
 var stack_limit = 5
 
@@ -50,7 +52,14 @@ func set_map_no_load(new_map):
 	add_child(map)
 	map.fix_invalid_tiles()
 
-# Called when the node enters the scene tree for the first time.
+
+
+
+
+
+
+
+
 func _ready():
 	
 	
@@ -74,21 +83,30 @@ func _ready():
 	map.fix_invalid_tiles()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
+
+
 func _process(delta):
+	if paused: return
+	if Input.is_action_just_pressed("pause"):
+		pause()
+		var pause_menu = load("res://pause_menu.tscn").instance()
+		add_child(pause_menu)
 	#$ui/held_item.position = get_global_mouse_position()# + get_viewport_rect().size*0.5
 	#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
-	if Input.is_action_just_pressed("lclick"):
+	if Input.is_action_just_pressed("lclick") and mpos.y > 24:
+		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
 		if $ui/hotbar.get_item(map.get_cell(mx,my), 1):
 			#print("sssssssssssssssssss")
 			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
 			
-	if Input.is_action_just_pressed("rclick"):
+	if Input.is_action_just_pressed("rclick") and mpos.y > 24:
 		var s = $ui/hotbar.selected
 		var b = $ui/hotbar.tiles[s]
 		if b != -1 and map.get_cell(mx,my) == breakto[b]:
@@ -110,6 +128,11 @@ func _process(delta):
 				map.get_node("generated").set_cell(cx,cy,0)
 				
 				
+
+
+
+
+
 
 func save_current_map():
 	#print("qqqqqqsdfgh")
@@ -197,3 +220,16 @@ func load_map():
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
 		save_current_map()
+
+func unpause():
+	paused = false
+	$ui.paused = false
+	$player.paused = false
+	#map.paused = false
+
+func pause():
+	paused = true
+	$ui.paused = true
+	$player.paused = true
+	#map.paused = true
+

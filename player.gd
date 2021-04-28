@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 
-
+var paused = false
 
 var speed = 6
 #var scale = 2
@@ -13,6 +13,7 @@ func _ready():
 	pass#speed *= scale.x
 
 func _process(delta):
+	if paused: return
 	if Input.is_action_pressed("up"):
 		move_and_slide(Vector2(0,-speed*60))
 	if Input.is_action_pressed("down"):

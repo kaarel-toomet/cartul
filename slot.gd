@@ -10,6 +10,8 @@ var amount = 0
 
 var max_item_id = 4
 
+
+
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
 				preload("res://assets/sand.png"), preload("res://assets/water.png"),
 				preload("res://assets/box.png"), null]
@@ -32,3 +34,4 @@ func _process(delta):
 	$amount.text = str(amount)
 	if -1 <= item and item <= max_item_id:
 		$texture.texture = textures[item]
+

@@ -13,8 +13,8 @@ func _ready():
 
 func _process(delta):
 	if Input.is_action_just_pressed("pause"):
-		get_parent().unpause()
 		queue_free()
+		get_parent().unpause()
 
 
 func _on_unpause_pressed():

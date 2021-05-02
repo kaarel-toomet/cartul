@@ -29,7 +29,7 @@ func _ready():
 
 func _process(delta):
 	#if Input.is_action_just_pressed("down"): #print("asdsds")
-	if paused: return
+	#if paused: return
 	$held_item.rect_position = get_viewport().get_mouse_position()
 	if Input.is_action_just_pressed("lclick") and slot_with_mouse != null:
 		#print(slot_with_mouse)
@@ -71,8 +71,8 @@ func slot_mouse_entered(slot):
 	slot_with_mouse = slot
 	#print(slot, "eee")
 	
-func inventory_mouse_exited(_inventory):
-	#print("x")
+func inventory_mouse_exited(inventory):
+	#print("x", inventory)
 	slot_with_mouse = null
 
 

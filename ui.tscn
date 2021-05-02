@@ -5,6 +5,7 @@
 [ext_resource path="res://ui.gd" type="Script" id=3]
 
 [node name="ui" type="CanvasLayer"]
+layer = 2
 script = ExtResource( 3 )
 
 [node name="hotbar" type="HBoxContainer" parent="."]

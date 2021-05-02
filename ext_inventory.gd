@@ -27,7 +27,7 @@ func _ready():
 		slots[s].id = s
 		slots[s].max_item_id = max_item_id
 		
-		#slots[s].connect("gui_input", get_parent(), "slot_gui_input", [slots[s]])
+		slots[s].connect("mouse_entered", get_parent(), "slot_mouse_entered", [slots[s]])
 
 				
 func can_get(item, amount):
@@ -69,7 +69,7 @@ func lose_item(item, amount):
 			set_item(slot_num-s-1, item, num - min(n, num))
 			n -= min(n, num)
 		if n <= 0: return true
-	print("something went wrong in 'lose_item")
+	print("something went wrong in lose_item")
 	return false
 
 func set_item(slot_id, item, amount):
@@ -80,12 +80,26 @@ func set_item(slot_id, item, amount):
 
 
 func _process(delta):
-	if Input.is_action_just_pressed("E"): queue_free()
+	if Input.is_action_just_pressed("E"):
+		var main = get_parent().get_parent()
+		for i in range(slot_num):
+			
+			main.tile_data[main.data_coordinates.find([main.get_node("player").map_pos.x,
+			main.get_node("player").map_pos.y])][0][i] = tiles[i]
+			
+			main.tile_data[main.data_coordinates.find([main.get_node("player").map_pos.x,
+			main.get_node("player").map_pos.y])][1][i] = amounts[i]
+		
+		if main.get_node("ui").slot_with_mouse in slots:
+			main.get_node("ui").slot_with_mouse = null
+		queue_free()
+		main.unpause()
+		main.get_node("player").open_override = true
 	
 	
-	if !get_global_rect().has_point(get_viewport().get_global_mouse_position()) and mousein:
+	if !get_global_rect().has_point(get_viewport().get_mouse_position()) and mousein:
 		mousein = false
 		emit_signal("mouse_exit")
-	if get_global_rect().has_point(get_viewport().get_global_mouse_position()): mousein = true
+	if get_global_rect().has_point(get_viewport().get_mouse_position()): mousein = true
 		
 		

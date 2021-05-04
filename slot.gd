@@ -21,6 +21,9 @@ func _ready():
 	pass # Replace with function body.
 
 func set_item(new_item, new_amount):
+	if get_parent().slot_num <= id:
+		queue_free()
+		return
 	get_parent().tiles[id] = new_item
 	get_parent().amounts[id] = new_amount
 	item = new_item

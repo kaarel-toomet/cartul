@@ -7,9 +7,10 @@ var speed = 6
 #var scale = 2
 var spawnpoint = Vector2(0,0)
 
-var box_ui = preload("res://box_ui.tscn")
+#var box_ui = preload("res://box_ui.tscn")
+#var inventory = preload("")
 
-var open_override = false
+#var open_override = false
 
 var map_pos
 
@@ -35,33 +36,34 @@ func _process(delta):
 	map_pos = Vector2(floor(position.x/get_parent().scale.x/get_parent().tile_size.x),
 	floor(position.y/get_parent().scale.y/get_parent().tile_size.y))
 	
-	if Input.is_action_just_pressed("E") and get_parent().map.get_cellv(map_pos) == 4 and !open_override:
-		get_parent().data_coordinates = get_parent().data_coordinates.duplicate(true)
-		get_parent().tile_data = get_parent().tile_data.duplicate(true)
-		var data_loc = -1 #get_parent().data_coordinates.find([get_parent().map_id, map_pos.x, map_pos.y, 4])
-		for i in range(len(get_parent().data_coordinates)):
-			if get_parent().data_coordinates[i].duplicate(true) == [get_parent().map_id, map_pos.x, map_pos.y, 4].duplicate(true):
-				data_loc = i
-				break
-		
-		print(data_loc)
-		if data_loc == -1:
-			print("Opened a box with no data, created empty data")
-			get_parent().data_coordinates.append([get_parent().map_id, map_pos.x, map_pos.y, 4])
-			get_parent().tile_data.append([[-1,-1,-1,-1,-1],[0,0,0,0,0]])
-		get_parent().pause()
-		var ui = box_ui.instance()
-		ui.rect_scale = scale
-		ui.stack_limit = get_parent().stack_limit
-		ui.max_item_id = get_parent().max_item_id
-		get_parent().get_node("ui").add_child(ui)
-		
-		for i in range(len(get_parent().tile_data[data_loc][0])):
-			ui.set_item(i, get_parent().tile_data[data_loc][0][i],get_parent().tile_data[data_loc][1][i])
-	
-	open_override = false
-	
 	if get_parent().map.get_cellv(map_pos) == 3:
 		speed = 3
 	else:
 		speed = 6
+#	if Input.is_action_just_pressed("E") and get_parent().map.get_cellv(map_pos) == 4 and !open_override:
+#		get_parent().data_coordinates = get_parent().data_coordinates.duplicate(true)
+#		get_parent().tile_data = get_parent().tile_data.duplicate(true)
+#		var data_loc = -1 #get_parent().data_coordinates.find([get_parent().map_id, map_pos.x, map_pos.y, 4])
+#		for i in range(len(get_parent().data_coordinates)):
+#			if get_parent().data_coordinates[i].duplicate(true) == [get_parent().map_id, map_pos.x, map_pos.y, 4].duplicate(true):
+#				data_loc = i
+#				break
+#
+#		print(data_loc) 
+#		if data_loc == -1:
+#			print("Opened a box with no data, created empty data")
+#			get_parent().data_coordinates.append([get_parent().map_id, map_pos.x, map_pos.y, 4])
+#			get_parent().tile_data.append([[-1,-1,-1,-1,-1],[0,0,0,0,0]])
+#		get_parent().pause()
+#		var ui = box_ui.instance()
+#		ui.rect_scale = scale
+#		ui.stack_limit = get_parent().stack_limit
+#		ui.max_item_id = get_parent().max_item_id
+#		get_parent().get_node("ui").add_child(ui)
+#
+#		for i in range(len(get_parent().tile_data[data_loc][0])):
+#			ui.set_item(i, get_parent().tile_data[data_loc][0][i],get_parent().tile_data[data_loc][1][i])
+#
+#	open_override = false
+	
+	

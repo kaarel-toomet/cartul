@@ -12,12 +12,12 @@ var gen_dist = Vector2(1,1)
 var paused = false
 
 var max_item_id = 4
-var stack_limit = 5
+var stack_limit = 2147483647
 
 var breakto = {-1:-1,0:2,1:2,2:3,3:-1, 4:2}
 
-var tile_data = []
-var data_coordinates = []
+#var tile_data = []
+#var data_coordinates = []
 ## format: 
 #tile_data = [[[items],[amounts]]] for boxes
 #data_coordinates = [[map, x, y, type]] for all
@@ -73,9 +73,11 @@ func _ready():
 	
 	
 	
-	$ui.stack_limit = 5
+	$ui.stack_limit = stack_limit
+	$ui/ScrollContainer/hotbar.stack_limit = stack_limit
 	$ui.max_item_id = max_item_id
-	$ui/hotbar.rect_scale = scale
+	$ui/ScrollContainer/hotbar.max_item_id = max_item_id
+	$ui/ScrollContainer/hotbar.rect_scale = scale
 	$ui/held_item.rect_scale = scale
 	
 	map = earth.instance()
@@ -111,31 +113,31 @@ func _process(delta):
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
-		if $ui/hotbar.get_item(map.get_cell(mx,my), 1):
+		if $ui/ScrollContainer/hotbar.get_item(map.get_cell(mx,my), 1):
 			#print("sssssssssssssssssss")
 			
-			if map.get_cell(mx,my) == 4:
-				if data_coordinates.find([map_id, mx, my, 4]) == -1:
-					print("Box with no data broken")
-				else:
-					var data = tile_data[data_coordinates.find([map_id, mx, my, 4])]
-					tile_data.remove(data_coordinates.find([map_id, mx, my, 4]))
-					data_coordinates.remove(data_coordinates.find([map_id, mx, my, 4]))
-					for i in range(len(data[0])):
-						$ui/hotbar.get_item(data[0][i], data[1][i])
+#			if map.get_cell(mx,my) == 4:
+#				if data_coordinates.find([map_id, mx, my, 4]) == -1:
+#					print("Box with no data broken")
+#				else:
+#					var data = tile_data[data_coordinates.find([map_id, mx, my, 4])]
+#					tile_data.remove(data_coordinates.find([map_id, mx, my, 4]))
+#					data_coordinates.remove(data_coordinates.find([map_id, mx, my, 4]))
+#					for i in range(len(data[0])):
+#						$ui/hotbar.get_item(data[0][i], data[1][i])
 			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
 			
 	if Input.is_action_just_pressed("rclick") and get_viewport().get_mouse_position().y > 24:
-		print(data_coordinates)
-		print(tile_data)
-		var s = $ui/hotbar.selected
-		var b = $ui/hotbar.tiles[s]
+#		print(data_coordinates)
+#		print(tile_data)
+		var s = $ui/ScrollContainer/hotbar.selected
+		var b = $ui/ScrollContainer/hotbar.tiles[s]
 		if b != -1 and map.get_cell(mx,my) == breakto[b]:
-			$ui/hotbar.set_item(s,b,$ui/hotbar.amounts[s]-1)
+			$ui/ScrollContainer/hotbar.set_item(s,b,$ui/ScrollContainer/hotbar.amounts[s]-1)
 			map.set_cell(mx,my,b)
-			if b == 4:
-				tile_data.append([[-1,-1,-1,-1,-1],[0,0,0,0,0]])
-				data_coordinates.append([map_id, mx, my, 4])
+#			if b == 4:
+#				tile_data.append([[-1,-1,-1,-1,-1],[0,0,0,0,0]])
+#				data_coordinates.append([map_id, mx, my, 4])
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		
 	if Input.is_action_just_pressed("J"):
@@ -181,9 +183,9 @@ func save_current_map():
 	#$player.position.x=-999
 	for s in range(20):
 		
-		data.store_16($ui/hotbar.tiles[s])
+		data.store_16($ui/ScrollContainer/hotbar.tiles[s])
 		#$player.position.x=300*s
-		data.store_16($ui/hotbar.amounts[s])
+		data.store_16($ui/ScrollContainer/hotbar.amounts[s])
 	#$player.position.x=999
 	data.store_64(seed_)
 	data.store_double($player.spawnpoint.x)
@@ -193,22 +195,22 @@ func save_current_map():
 	data.store_16(map_id)
 	data.close()
 	
-	var tiledata := File.new()
-	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.WRITE)
-	#tiledata.store_16(map_id)
-	#if !len(data_coordinates) == 0:
-	#print(data_coordinates)
-	#print(tile_data)
-	var i = 0
-	while i < (len(data_coordinates)):
-		tiledata.store_64(data_coordinates[i][1])
-		tiledata.store_64(data_coordinates[i][2])
-		tiledata.store_16(data_coordinates[i][3])
-		for j in range(len(tile_data[i][0])):
-			tiledata.store_16(tile_data[i][0][j])
-			tiledata.store_16(tile_data[i][1][j])
-		i += 1
-	tiledata.close()
+#	var tiledata := File.new()
+#	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.WRITE)
+#	#tiledata.store_16(map_id)
+#	#if !len(data_coordinates) == 0:
+#	#print(data_coordinates)
+#	#print(tile_data)
+#	var i = 0
+#	while i < (len(data_coordinates)):
+#		tiledata.store_64(data_coordinates[i][1])
+#		tiledata.store_64(data_coordinates[i][2])
+#		tiledata.store_16(data_coordinates[i][3])
+#		for j in range(len(tile_data[i][0])):
+#			tiledata.store_16(tile_data[i][0][j])
+#			tiledata.store_16(tile_data[i][1][j])
+#		i += 1
+#	tiledata.close()
 		
 
 	
@@ -219,7 +221,7 @@ func load_world():
 	data.open("res://world/data",File.READ)
 	if data.file_exists("res://world/data"):
 		for s in range(20):
-			$ui/hotbar.set_item(s,data.get_16(),data.get_16())
+			$ui/ScrollContainer/hotbar.set_item(s,data.get_16(),data.get_16())
 		seed_ = data.get_64()
 		$player.spawnpoint.x = data.get_double()
 		$player.spawnpoint.y = data.get_double()
@@ -249,33 +251,33 @@ func load_world():
 		print("chunks file not found")
 	
 	
-	data_coordinates = []
-	tile_data = []
-	
-	var tiledata := File.new()
-	
-	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.READ)
-	
-	if tiledata.file_exists("res://world/tile_data_" + string_map_ids[map_id]):
-		#tiledata.store_16(map_id)
-		var i = 0
-		while tiledata.get_position() < tiledata.get_len():
-			data_coordinates.append([])
-			data_coordinates[i].append(map_id)
-			data_coordinates[i].append(tiledata.get_64())
-			data_coordinates[i].append(tiledata.get_64())
-			data_coordinates[i].append(tiledata.get_16())
-			tile_data.append([])
-			tile_data[i].append([])
-			tile_data[i].append([])
-			for j in range(5):
-				tile_data[i][0].append(tiledata.get_16())
-				tile_data[i][1].append(tiledata.get_16())
-				if tile_data[i][0][j] == 65535: tile_data[i][0][j] = -1
-			i += 1
-	else:
-		print("tile data file not found")
-	tiledata.close()
+#	data_coordinates = []
+#	tile_data = []
+#
+#	var tiledata := File.new()
+#	
+#	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.READ)
+#
+#	if tiledata.file_exists("res://world/tile_data_" + string_map_ids[map_id]):
+#		#tiledata.store_16(map_id)
+#		var i = 0
+#		while tiledata.get_position() < tiledata.get_len():
+#			data_coordinates.append([])
+#			data_coordinates[i].append(map_id)
+#			data_coordinates[i].append(tiledata.get_64())
+#			data_coordinates[i].append(tiledata.get_64())
+#			data_coordinates[i].append(tiledata.get_16())
+#			tile_data.append([])
+#			tile_data[i].append([])
+#			tile_data[i].append([])
+#			for j in range(5):
+#				tile_data[i][0].append(tiledata.get_16())
+#				tile_data[i][1].append(tiledata.get_16())
+#				if tile_data[i][0][j] == 65535: tile_data[i][0][j] = -1
+#			i += 1
+#	else:
+#		print("tile data file not found")
+#	tiledata.close()
 		
 		
 		
@@ -303,33 +305,33 @@ func load_map():
 	
 	#print(data_coordinates)
 	#print(tile_data)
-	data_coordinates = []
-	tile_data = []
-	var tiledata := File.new()
-	
-	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.READ)
-	
-	
-	if tiledata.file_exists("res://world/tile_data_" + string_map_ids[map_id]):
-		#tiledata.store_16(map_id)
-		var i = 0
-		while tiledata.get_position() < tiledata.get_len():
-			data_coordinates.append([])
-			data_coordinates[i].append(map_id)
-			data_coordinates[i].append(tiledata.get_64())
-			data_coordinates[i].append(tiledata.get_64())
-			data_coordinates[i].append(tiledata.get_16())
-			tile_data.append([])
-			tile_data[i].append([])
-			tile_data[i].append([])
-			for j in range(5):
-				tile_data[i][0].append(tiledata.get_16())
-				tile_data[i][1].append(tiledata.get_16())
-				if tile_data[i][0][j] == 65535: tile_data[i][0][j] = -1
-			i += 1
-	else:
-		print("tile data file not found")
-	tiledata.close()
+#	data_coordinates = []
+#	tile_data = []
+#	var tiledata := File.new()
+#	
+#	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.READ)
+#
+#
+#	if tiledata.file_exists("res://world/tile_data_" + string_map_ids[map_id]):
+#		#tiledata.store_16(map_id)
+#		var i = 0
+#		while tiledata.get_position() < tiledata.get_len():
+#			data_coordinates.append([])
+#			data_coordinates[i].append(map_id)
+#			data_coordinates[i].append(tiledata.get_64())
+#			data_coordinates[i].append(tiledata.get_64())
+#			data_coordinates[i].append(tiledata.get_16())
+#			tile_data.append([])
+#			tile_data[i].append([])
+#			tile_data[i].append([])
+#			for j in range(5):
+#				tile_data[i][0].append(tiledata.get_16())
+#				tile_data[i][1].append(tiledata.get_16())
+#				if tile_data[i][0][j] == 65535: tile_data[i][0][j] = -1
+#			i += 1
+#	else:
+#		print("tile data file not found")
+#	tiledata.close()
 	
 	
 	

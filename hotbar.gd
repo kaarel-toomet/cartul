@@ -2,8 +2,8 @@ extends HBoxContainer
 
 
 
-var tiles = [4,1,2,3,0,7,8,1,1,1, 0,-1,-1,-1,-1,9,0,0,0,0]
-var amounts=[5,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
+export var tiles = [4,1,2,3,0,7,8,1,1,1, 0,-1,-1,-1,-1,9,0,0,0,0]
+export var amounts=[5,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
 
 var selected = 0
 var stack_limit = 5
@@ -12,7 +12,7 @@ var max_item_id = 4
 
 var mousein = false
 
-signal mouse_exit
+#signal mouse_exit
 
 var slot_num = 20
 onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5,
@@ -20,7 +20,7 @@ onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5,
 			 $slot11, $slot12, $slot13, $slot14, $slot15,
 			 $slot16, $slot17, $slot18, $slot19, $slot20]
 func _ready():
-	self.connect("mouse_exit", get_parent(), "inventory_mouse_exited", [self])
+	#self.connect("mouse_exit", get_parent(), "inventory_mouse_exited", [self])
 	for s in range(slot_num):
 		slots[s].item = tiles[s]
 		slots[s].amount = amounts[s]
@@ -40,7 +40,7 @@ func _input(event):
 
 func can_get(item, amount):
 	var n = amount
-	for s in range(len(slots)):
+	for s in range(slot_num):
 		if tiles[s] in [-1, item]:
 			n -= stack_limit - amounts[s]
 		if n <= 0: return true
@@ -51,10 +51,14 @@ func get_item(item, amount):
 	if item == -1 or !can_get(item, amount): return false
 	var n = amount
 	for s in range(slot_num):
-		if tiles[s] in [-1, item]:
+		if tiles[s] == item:
 			var num = amounts[s]
 			set_item(s, item, num + min(n, stack_limit - num))
 			n -= min(n, stack_limit - num)
+	for s in range(slot_num):
+		if tiles[s] == -1:
+			set_item(s, item, min(n, stack_limit))
+			n -= min(n, stack_limit)
 		if n <= 0: return true
 	print("something went wrong in get_item")
 	return false
@@ -86,16 +90,42 @@ func set_item(slot_id, item, amount):
 	slots[slot_id].item = item
 	slots[slot_id].amount = amount
 
+func add_slot():
+	var slot = load("res://slot.tscn").instance()
+	add_child(slot)
+	slot_num += 1
+	slot.connect("mouse_entered", get_parent().get_parent(), "slot_mouse_entered", [slot])
+	amounts.append(0)
+	tiles.append(-1)
+	slot.set_item(-1, 0)
+	slots.append(slot)
+	#get_parent().rect_size.x += 9999
+	
+
+func remove_slot():
+	#print(slots)
+	slots[-1].queue_free()
+	slot_num -= 1
+	amounts.remove(len(amounts)-1)
+	tiles.remove(len(tiles)-1)
+	slots.remove(len(slots)-1)
+	
+	#print(slots)
+	
 
 func _process(delta):
-	
+	#print(stack_limit)
 	for s in slots:
 		s.color = Color(0.5, 0.5, 0.5)
 	slots[selected].color = Color(0,0,0)
 	
-	if !get_global_rect().has_point(get_viewport().get_mouse_position()) and mousein:
+	if !get_parent().get_global_rect().has_point(get_viewport().get_mouse_position()) and mousein:
 		mousein = false
-		emit_signal("mouse_exit")
+		get_parent().get_parent().slot_with_mouse = null
+		#print("awyfg")
 	if get_global_rect().has_point(get_viewport().get_mouse_position()): mousein = true
+	#print(amounts[-1], amounts[-2])
+	if amounts[-1] == 0 and amounts[-2] == 0 and slot_num > 4: remove_slot()
+	if amounts[-1] != 0: add_slot()
 		
 		

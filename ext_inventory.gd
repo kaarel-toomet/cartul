@@ -1,5 +1,11 @@
 extends HBoxContainer
 
+"""
+This file is unused.
+It was part of a plan to make inventory space limited and extra items be held in boxes.
+The plan was cancelled due to game design choices and bugs.
+Most of the (mostly complete) code has been commented out and left behind.
+"""
 
 
 var tiles = [0,1,2,3,4]

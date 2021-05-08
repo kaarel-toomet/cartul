@@ -17,9 +17,8 @@ __meta__ = {
 }
 
 [node name="hotbar" type="HBoxContainer" parent="ScrollContainer"]
-margin_right = 320.0
+margin_right = 64.0
 margin_bottom = 24.0
-mouse_filter = 0
 custom_constants/separation = 0
 script = ExtResource( 2 )
 __meta__ = {
@@ -39,70 +38,6 @@ margin_right = 48.0
 [node name="slot4" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
 margin_left = 48.0
 margin_right = 64.0
-
-[node name="slot5" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 64.0
-margin_right = 80.0
-
-[node name="slot6" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 80.0
-margin_right = 96.0
-
-[node name="slot7" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 96.0
-margin_right = 112.0
-
-[node name="slot8" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 112.0
-margin_right = 128.0
-
-[node name="slot9" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 128.0
-margin_right = 144.0
-
-[node name="slot10" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 144.0
-margin_right = 160.0
-
-[node name="slot11" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 160.0
-margin_right = 176.0
-
-[node name="slot12" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 176.0
-margin_right = 192.0
-
-[node name="slot13" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 192.0
-margin_right = 208.0
-
-[node name="slot14" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 208.0
-margin_right = 224.0
-
-[node name="slot15" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 224.0
-margin_right = 240.0
-
-[node name="slot16" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 240.0
-margin_right = 256.0
-
-[node name="slot17" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 256.0
-margin_right = 272.0
-
-[node name="slot18" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 272.0
-margin_right = 288.0
-
-[node name="slot19" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 288.0
-margin_right = 304.0
-
-[node name="slot20" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 304.0
-margin_right = 320.0
 
 [node name="held_item" type="TextureRect" parent="."]
 margin_left = 640.0

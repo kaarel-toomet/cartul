@@ -181,7 +181,8 @@ func save_current_map():
 	var data := File.new()
 	data.open("res://world/data",File.WRITE)
 	#$player.position.x=-999
-	for s in range(20):
+	data.store_16($ui/ScrollContainer/hotbar.slot_num)
+	for s in range($ui/ScrollContainer/hotbar.slot_num):
 		
 		data.store_16($ui/ScrollContainer/hotbar.tiles[s])
 		#$player.position.x=300*s
@@ -220,7 +221,10 @@ func load_world():
 	var data := File.new()
 	data.open("res://world/data",File.READ)
 	if data.file_exists("res://world/data"):
-		for s in range(20):
+		$ui/ScrollContainer/hotbar.slot_num = data.get_16()
+		for s in range($ui/ScrollContainer/hotbar.slot_num - 4):
+			$ui/ScrollContainer/hotbar.add_slot()
+		for s in range($ui/ScrollContainer/hotbar.slot_num):
 			$ui/ScrollContainer/hotbar.set_item(s,data.get_16(),data.get_16())
 		seed_ = data.get_64()
 		$player.spawnpoint.x = data.get_double()

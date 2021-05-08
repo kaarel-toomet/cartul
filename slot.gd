@@ -22,6 +22,7 @@ func _ready():
 
 func set_item(new_item, new_amount):
 	if get_parent().slot_num <= id:
+		#print("wertyuiytrertyuytrertytrerrr11111111111111")
 		queue_free()
 		return
 	get_parent().tiles[id] = new_item

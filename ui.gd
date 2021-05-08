@@ -72,9 +72,9 @@ func slot_mouse_entered(slot):
 	slot_with_mouse = slot
 	#print(slot, "eee")
 	
-#func inventory_mouse_exited(_inventory):
-#	#print("x", inventory)
-#	slot_with_mouse = null
+func inventory_mouse_exited(_inventory):
+	#print("x", inventory)
+	slot_with_mouse = null
 
 
 

@@ -2,8 +2,8 @@ extends HBoxContainer
 
 
 
-export var tiles = [4,1,2,3,0,7,8,1,1,1, 0,-1,-1,-1,-1,9,0,0,0,0]
-export var amounts=[5,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0]
+export var tiles = [1,2,3,4]
+export var amounts=[5,6,7,8]
 
 var selected = 0
 var stack_limit = 5
@@ -12,13 +12,10 @@ var max_item_id = 4
 
 var mousein = false
 
-#signal mouse_exit
+signal mouse_exit
 
-var slot_num = 20
-onready var slots = [$slot1, $slot2, $slot3, $slot4, $slot5,
-			 $slot6, $slot7, $slot8, $slot9, $slot10,
-			 $slot11, $slot12, $slot13, $slot14, $slot15,
-			 $slot16, $slot17, $slot18, $slot19, $slot20]
+var slot_num = 4
+onready var slots = [$slot1, $slot2, $slot3, $slot4]
 func _ready():
 	#self.connect("mouse_exit", get_parent(), "inventory_mouse_exited", [self])
 	for s in range(slot_num):
@@ -32,9 +29,9 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			if event.button_index == BUTTON_WHEEL_UP:
-				selected =  posmod(selected-1,20)
+				selected =  posmod(selected-1,slot_num)
 			if event.button_index == BUTTON_WHEEL_DOWN:
-				selected =  posmod(selected+1,20)
+				selected =  posmod(selected+1,slot_num)
 				#collect(21)
 				
 
@@ -93,12 +90,15 @@ func set_item(slot_id, item, amount):
 func add_slot():
 	var slot = load("res://slot.tscn").instance()
 	add_child(slot)
-	slot_num += 1
 	slot.connect("mouse_entered", get_parent().get_parent(), "slot_mouse_entered", [slot])
-	amounts.append(0)
-	tiles.append(-1)
 	slot.set_item(-1, 0)
 	slots.append(slot)
+	slot.id = slot_num
+	
+	slot_num += 1
+	amounts.append(0)
+	tiles.append(-1)
+	
 	#get_parent().rect_size.x += 9999
 	
 
@@ -119,12 +119,13 @@ func _process(delta):
 		s.color = Color(0.5, 0.5, 0.5)
 	slots[selected].color = Color(0,0,0)
 	
-	if !get_parent().get_global_rect().has_point(get_viewport().get_mouse_position()) and mousein:
+	if !get_parent().get_global_rect().has_point(get_viewport().get_mouse_position()):# and mousein:
 		mousein = false
 		get_parent().get_parent().slot_with_mouse = null
+		#emit_signal("mouse_exit")
 		#print("awyfg")
 	if get_global_rect().has_point(get_viewport().get_mouse_position()): mousein = true
-	#print(amounts[-1], amounts[-2])
+	#print(slots)
 	if amounts[-1] == 0 and amounts[-2] == 0 and slot_num > 4: remove_slot()
 	if amounts[-1] != 0: add_slot()
 		

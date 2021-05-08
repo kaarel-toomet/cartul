@@ -221,8 +221,7 @@ func load_world():
 	var data := File.new()
 	data.open("res://world/data",File.READ)
 	if data.file_exists("res://world/data"):
-		$ui/ScrollContainer/hotbar.slot_num = data.get_16()
-		for s in range($ui/ScrollContainer/hotbar.slot_num - 4):
+		for s in range(data.get_16() - 4):
 			$ui/ScrollContainer/hotbar.add_slot()
 		for s in range($ui/ScrollContainer/hotbar.slot_num):
 			$ui/ScrollContainer/hotbar.set_item(s,data.get_16(),data.get_16())

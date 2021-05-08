@@ -115,6 +115,7 @@ func remove_slot():
 
 func _process(delta):
 	#print(stack_limit)
+	if selected >= slot_num: selected = 0
 	for s in slots:
 		s.color = Color(0.5, 0.5, 0.5)
 	slots[selected].color = Color(0,0,0)

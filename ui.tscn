@@ -10,7 +10,9 @@ script = ExtResource( 3 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 24.0
+margin_right = -512.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 36, 36 )
 rect_scale = Vector2( 2, 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -19,6 +21,7 @@ __meta__ = {
 [node name="hotbar" type="HBoxContainer" parent="ScrollContainer"]
 margin_right = 64.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 64, 24 )
 custom_constants/separation = 0
 script = ExtResource( 2 )
 __meta__ = {

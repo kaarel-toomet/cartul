@@ -13,7 +13,7 @@ var stack_limit = 5
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
 				preload("res://assets/sand.png"), preload("res://assets/water.png"),
-				preload("res://assets/box.png"), null]
+				preload("res://assets/box.png"), preload("res://assets/frame.png"), null]
 #const slot_scene = preload("res://slot.tscn")
 
 # Called when the node enters the scene tree for the first time.

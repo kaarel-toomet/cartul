@@ -14,7 +14,7 @@ var max_item_id = 4
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
 				preload("res://assets/sand.png"), preload("res://assets/water.png"),
-				preload("res://assets/box.png"), null]
+				preload("res://assets/box.png"), preload("res://assets/frame.png"), null]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

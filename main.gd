@@ -11,7 +11,7 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 4
+var max_item_id = 5
 var stack_limit = 2147483647
 
 var breakto = {-1:-1,0:2,1:2,2:3,3:-1, 4:2}
@@ -34,13 +34,15 @@ var player = preload("res://player.tscn")
 
 var earth = preload("res://earth.tscn")
 var earth_underg = preload("res://earth_underground.tscn")
+var player_map = preload("res://player_map.tscn")
 
 var map
 var map_id = 0
-var map_scene_to_id = {0:earth, 1:earth_underg}
-var string_map_ids = {0:"earth",1:"earth_underground"}
+var map_scene_to_id = {0:earth, 1:earth_underg, 2:player_map}
+var string_map_ids = {0:"earth",1:"earth_underground",2:"player_map"}
 
 func set_map(new_map):
+	if map_id == 2: sync_player_map()
 	save_current_map()
 	map_id = new_map
 	map.queue_free()
@@ -109,7 +111,7 @@ func _process(delta):
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
-	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 24:
+	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 48:
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
@@ -127,11 +129,13 @@ func _process(delta):
 #						$ui/hotbar.get_item(data[0][i], data[1][i])
 			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
 			
-	if Input.is_action_just_pressed("rclick") and get_viewport().get_mouse_position().y > 24:
+	if Input.is_action_just_pressed("rclick") and get_viewport().get_mouse_position().y > 48:
 #		print(data_coordinates)
 #		print(tile_data)
+		#print(map.get_cell(mx,my))
 		var s = $ui/ScrollContainer/hotbar.selected
 		var b = $ui/ScrollContainer/hotbar.tiles[s]
+		
 		if b != -1 and map.get_cell(mx,my) == breakto[b]:
 			$ui/ScrollContainer/hotbar.set_item(s,b,$ui/ScrollContainer/hotbar.amounts[s]-1)
 			map.set_cell(mx,my,b)
@@ -139,11 +143,17 @@ func _process(delta):
 #				tile_data.append([[-1,-1,-1,-1,-1],[0,0,0,0,0]])
 #				data_coordinates.append([map_id, mx, my, 4])
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
-		
+	
+#	if Input.is_action_just_pressed("E"):
+#		pause()
+#		add_child(load("res://player_editor.tscn").instance())
+	
 	if Input.is_action_just_pressed("J"):
 		if map_id == 0:
 			set_map(1)
 		elif map_id == 1:
+			set_map(2)
+		elif map_id == 2:
 			set_map(0)
 	var pcx = floor($player.position.x/(tile_size.x*chunk_size.x*scale.x))
 	var pcy = floor($player.position.y/(tile_size.y*chunk_size.y*scale.y))
@@ -252,6 +262,8 @@ func load_world():
 		
 	else:
 		print("chunks file not found")
+		
+	sync_player_map()
 	
 	
 #	data_coordinates = []
@@ -336,7 +348,26 @@ func load_map():
 #		print("tile data file not found")
 #	tiledata.close()
 	
+
+func sync_player_map():
 	
+	var chunks := File.new()
+	chunks.open("res://world/map_player_map",File.READ)
+	
+	if chunks.file_exists("res://world/map_player_map"):
+		while chunks.get_position() != chunks.get_len():
+			var chunk := Vector2()
+			chunk.x = chunks.get_64()
+			chunk.y = chunks.get_64()
+			#map.get_node("generated").set_cellv(chunk,0)
+			for x in range(chunk_size.x):
+				for y in range(chunk_size.y):
+					$player.get_node("TileMap").set_cell(x+chunk.x*chunk_size.x,y+chunk.y*chunk_size.x,chunks.get_16())
+		chunks.close()
+		
+	else:
+		print("player map file not found")
+
 	
 	
 	

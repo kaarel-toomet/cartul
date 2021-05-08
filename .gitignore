@@ -1,0 +1,10 @@
+# save worlds
+world/*
+
+# godot import files
+.import/*
+*.import
+
+exports/*
+
+export_presets.cfg

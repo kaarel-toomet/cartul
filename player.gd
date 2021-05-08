@@ -31,6 +31,13 @@ func _process(delta):
 		spawnpoint = position
 	if Input.is_action_just_pressed("R"):
 		position = spawnpoint
+	if Input.is_action_just_pressed("G") and get_parent().map.get_cellv(map_pos) == 6:
+		
+		if get_parent().map_id == 0:
+			get_parent().set_map(1)
+		elif get_parent().map_id == 1:
+			get_parent().set_map(0)
+
 	
 	
 	map_pos = Vector2(floor(position.x/get_parent().scale.x/get_parent().tile_size.x),

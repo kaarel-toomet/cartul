@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var max_item_id = 5
+var max_item_id = 6
 
 var held = -1
 var held_amount = 0
@@ -13,15 +13,18 @@ var stack_limit = 5
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
 				preload("res://assets/sand.png"), preload("res://assets/water.png"),
-				preload("res://assets/box.png"), preload("res://assets/frame.png"), null]
+				preload("res://assets/box.png"), preload("res://assets/frame.png"),
+				preload("res://assets/hole.png"), null]
 #const slot_scene = preload("res://slot.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#$ScrollContainer/hotbar.stack_limit = stack_limit
 	#$ScrollContainer/hotbar.max_item_id = max_item_id
+	$ScrollContainer/hotbar.max_item_id = max_item_id
 	for slot in $ScrollContainer/hotbar.get_children():
 		slot.textures = textures
+		slot.max_item_id = max_item_id
 		#slot.connect("gui_input", self, "slot_gui_input", [slot])
 		slot.connect("mouse_entered", self, "slot_mouse_entered", [slot])
 		#slot.connect("mouse_exited", self, "slot_mouse_exited")

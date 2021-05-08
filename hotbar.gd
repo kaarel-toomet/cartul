@@ -8,7 +8,7 @@ export var amounts=[5,6,7,8]
 var selected = 0
 var stack_limit = 5
 
-var max_item_id = 4
+var max_item_id = 5
 
 var mousein = false
 
@@ -114,6 +114,10 @@ func remove_slot():
 	
 
 func _process(delta):
+	if Input.is_action_just_pressed("craft"):
+		if tiles[selected] == 0:
+			lose_item(0,1)
+			get_item(5,1)
 	#print(stack_limit)
 	if selected >= slot_num: selected = 0
 	for s in slots:

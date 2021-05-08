@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var max_item_id = 4
+var max_item_id = 5
 
 var held = -1
 var held_amount = 0
@@ -21,6 +21,7 @@ func _ready():
 	#$ScrollContainer/hotbar.stack_limit = stack_limit
 	#$ScrollContainer/hotbar.max_item_id = max_item_id
 	for slot in $ScrollContainer/hotbar.get_children():
+		slot.textures = textures
 		#slot.connect("gui_input", self, "slot_gui_input", [slot])
 		slot.connect("mouse_entered", self, "slot_mouse_entered", [slot])
 		#slot.connect("mouse_exited", self, "slot_mouse_exited")

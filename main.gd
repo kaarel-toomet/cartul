@@ -14,7 +14,9 @@ var paused = false
 var max_item_id = 5
 var stack_limit = 2147483647
 
-var breakto = {-1:-1,0:2,1:2,2:3,3:-1, 4:2}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1}
+var breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1}
 
 #var tile_data = []
 #var data_coordinates = []
@@ -42,8 +44,12 @@ var map_scene_to_id = {0:earth, 1:earth_underg, 2:player_map}
 var string_map_ids = {0:"earth",1:"earth_underground",2:"player_map"}
 
 func set_map(new_map):
-	if map_id == 2: sync_player_map()
+	if new_map == 2:
+		breakto = player_breakto
+	else:
+		breakto = normal_breakto
 	save_current_map()
+	if map_id == 2: sync_player_map()
 	map_id = new_map
 	map.queue_free()
 	map = map_scene_to_id[new_map].instance()

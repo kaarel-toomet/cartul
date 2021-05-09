@@ -4,12 +4,12 @@
 [ext_resource path="res://slot.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 12 )
+extents = Vector2( 9, 13 )
 
 [node name="slot" type="ColorRect"]
-margin_right = 16.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 16, 24 )
+margin_right = 18.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 18, 26 )
 color = Color( 0.501961, 0.501961, 0.501961, 1 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -19,8 +19,8 @@ __meta__ = {
 [node name="texture" type="TextureRect" parent="."]
 margin_left = 1.0
 margin_top = 1.0
-margin_right = 15.0
-margin_bottom = 15.0
+margin_right = 17.0
+margin_bottom = 17.0
 mouse_filter = 2
 texture = ExtResource( 1 )
 expand = true
@@ -30,9 +30,10 @@ __meta__ = {
 }
 
 [node name="amount" type="Label" parent="."]
-margin_top = 16.0
-margin_right = 32.0
-margin_bottom = 30.0
+margin_left = 1.0
+margin_top = 18.0
+margin_right = 33.0
+margin_bottom = 32.0
 rect_scale = Vector2( 0.5, 0.5 )
 text = "2"
 align = 1
@@ -44,5 +45,5 @@ __meta__ = {
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 8, 12 )
+position = Vector2( 9, 13 )
 shape = SubResource( 1 )

@@ -18,6 +18,9 @@ var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2}
 var breakto = normal_breakto
 
+var normal_player_pos = Vector2()
+var internal_player_pos = Vector2()
+
 """Tile ids
 -1: none, 0: asdfstone, 1: grass, 2:sand, 3:water, 4: box, 5: frame, 6: hole
 """
@@ -46,12 +49,22 @@ var string_map_ids = {0:"earth",1:"earth_underground",2:"player_map"}
 
 func set_map(new_map):
 	
-	print("2ewrtyuio")
+	#print("2ewrtyuio")
 	prev_map = map_id
 	if new_map == 2:
+		
 		breakto = player_breakto
+		normal_player_pos = $player.position
+		$player.position = internal_player_pos
+	elif prev_map == 2:
+		breakto = normal_breakto
+		internal_player_pos = $player.position
+		$player.position = normal_player_pos
 	else:
 		breakto = normal_breakto
+		normal_player_pos = $player.position
+		#$player.position = normal_player_pos
+		
 	save_current_map()
 	if map_id == 2: sync_player_map()
 	map_id = new_map
@@ -215,8 +228,10 @@ func save_current_map():
 	data.store_64(seed_)
 	data.store_double($player.spawnpoint.x)
 	data.store_double($player.spawnpoint.y)
-	data.store_double($player.position.x)
-	data.store_double($player.position.y)
+	data.store_double(normal_player_pos.x)
+	data.store_double(normal_player_pos.y)
+	data.store_double(internal_player_pos.x)
+	data.store_double(internal_player_pos.y)
 	data.store_16(map_id)
 	data.store_16(prev_map)
 	data.close()
@@ -253,9 +268,15 @@ func load_world():
 		seed_ = data.get_64()
 		$player.spawnpoint.x = data.get_double()
 		$player.spawnpoint.y = data.get_double()
-		$player.position.x = data.get_double()
-		$player.position.y = data.get_double()
+		#$player.position.x = data.get_double()
+		#$player.position.y = data.get_double()
+		normal_player_pos = Vector2(data.get_double(),data.get_double())
+		internal_player_pos = Vector2(data.get_double(),data.get_double())
 		set_map_no_load(data.get_16())
+		if map_id == 2:
+			$player.position = internal_player_pos
+		else:
+			$player.position = normal_player_pos
 		prev_map = data.get_16()
 	else:
 		print("data file not found")

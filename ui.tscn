@@ -29,18 +29,23 @@ __meta__ = {
 }
 
 [node name="slot1" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
+margin_right = 16.0
+margin_bottom = 24.0
 
 [node name="slot2" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
 margin_left = 16.0
 margin_right = 32.0
+margin_bottom = 24.0
 
 [node name="slot3" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
 margin_left = 32.0
 margin_right = 48.0
+margin_bottom = 24.0
 
 [node name="slot4" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
 margin_left = 48.0
 margin_right = 64.0
+margin_bottom = 24.0
 
 [node name="held_item" type="TextureRect" parent="."]
 margin_left = 640.0
@@ -54,6 +59,20 @@ __meta__ = {
 margin_left = -8.0
 margin_top = -8.0
 margin_bottom = 6.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -32.0
+margin_top = 96.0
+margin_right = 32.0
+margin_bottom = 112.0
+text = "kjhgfdew"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

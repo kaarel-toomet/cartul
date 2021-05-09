@@ -35,13 +35,18 @@ func _process(delta):
 		
 		if get_parent().map_id == 0:
 			get_parent().set_map(1)
+			get_parent().map.set_cellv(map_pos,6)
 		elif get_parent().map_id == 1:
 			get_parent().set_map(0)
+			get_parent().map.set_cellv(map_pos,6)
+		
 
 	
 	
 	map_pos = Vector2(floor(position.x/get_parent().scale.x/get_parent().tile_size.x),
 	floor(position.y/get_parent().scale.y/get_parent().tile_size.y))
+	
+	get_parent().get_node("ui").get_node("Label").text = "X = " + str(position.x/get_parent().scale.x/get_parent().tile_size.x) + ", Y = " + str(position.y/get_parent().scale.y/get_parent().tile_size.y)
 	
 	if get_parent().map.get_cellv(map_pos) == 3:
 		speed = 3

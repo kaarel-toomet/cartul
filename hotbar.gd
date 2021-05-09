@@ -8,7 +8,7 @@ export var amounts=[5,6,7,8]
 var selected = 0
 var stack_limit = 5
 
-var max_item_id = 5
+var max_item_id = 7
 
 var mousein = false
 
@@ -22,7 +22,7 @@ func _ready():
 		slots[s].item = tiles[s]
 		slots[s].amount = amounts[s]
 		slots[s].id = s
-		slots[s].max_item_id = max_item_id
+		#slots[s].max_item_id = max_item_id
 
 
 func _input(event):
@@ -74,7 +74,7 @@ func lose_item(item, amount):
 	for s in range(slot_num):
 		if tiles[slot_num-s-1] == item:
 			var num = amounts[slot_num-s-1]
-			print(slot_num-s-1)
+			#print(slot_num-s-1)
 			set_item(slot_num-s-1, item, num - min(n, num))
 			n -= min(n, num)
 		if n <= 0: return true
@@ -91,13 +91,14 @@ func add_slot():
 	var slot = load("res://slot.tscn").instance()
 	add_child(slot)
 	slot.connect("mouse_entered", get_parent().get_parent(), "slot_mouse_entered", [slot])
-	slot.set_item(-1, 0)
+	
 	slots.append(slot)
 	slot.id = slot_num
 	
 	slot_num += 1
 	amounts.append(0)
 	tiles.append(-1)
+	slot.set_item(-1, 0)
 	
 	#get_parent().rect_size.x += 9999
 	
@@ -115,9 +116,13 @@ func remove_slot():
 
 func _process(delta):
 	if Input.is_action_just_pressed("craft"):
-		if tiles[selected] == 0:
+		print(tiles[0], " ",amounts[0],"   ",slots[0].item," ",slots[0].amount)
+		if tiles[selected] == 0: # asdfstone → frame
 			lose_item(0,1)
 			get_item(5,1)
+		elif tiles[selected] == 5: # frame → editor
+			lose_item(5,1)
+			get_item(7,1)
 	#print(stack_limit)
 	if selected >= slot_num: selected = 0
 	for s in slots:

@@ -11,18 +11,19 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 5
+var max_item_id = 7
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2}
-var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2, 7:-1}
 var breakto = normal_breakto
 
 var normal_player_pos = Vector2()
-var internal_player_pos = Vector2()
+var editing_player_pos = Vector2()
 
 """Tile ids
--1: none, 0: asdfstone, 1: grass, 2:sand, 3:water, 4: box, 5: frame, 6: hole
+-1: none, 0: asdfstone, 1: grass, 2:sand, 3:water, 4: box, 5: frame, 6: hole,
+7: editor
 """
 
 var prev_map = 0
@@ -48,17 +49,17 @@ var map_scene_to_id = {0:earth, 1:earth_underg, 2:player_map}
 var string_map_ids = {0:"earth",1:"earth_underground",2:"player_map"}
 
 func set_map(new_map):
-	
 	#print("2ewrtyuio")
 	prev_map = map_id
+	if prev_map == 2 and new_map == 2: prev_map = 0
 	if new_map == 2:
 		
 		breakto = player_breakto
 		normal_player_pos = $player.position
-		$player.position = internal_player_pos
+		$player.position = editing_player_pos
 	elif prev_map == 2:
 		breakto = normal_breakto
-		internal_player_pos = $player.position
+		editing_player_pos = $player.position
 		$player.position = normal_player_pos
 	else:
 		breakto = normal_breakto
@@ -175,13 +176,13 @@ func _process(delta):
 #		pause()
 #		add_child(load("res://player_editor.tscn").instance())
 	
-	if Input.is_action_just_pressed("J"):
-		if map_id == 0:
-			set_map(2)
-		elif map_id == 1:
-			set_map(2)
-		elif map_id == 2:
-			set_map(prev_map)
+#	if Input.is_action_just_pressed("J"):
+#		if map_id == 0:
+#			set_map(2)
+#		elif map_id == 1:
+#			set_map(2)
+#		elif map_id == 2:
+#			set_map(prev_map)
 	var pcx = floor($player.position.x/(tile_size.x*chunk_size.x*scale.x))
 	var pcy = floor($player.position.y/(tile_size.y*chunk_size.y*scale.y))
 	for cx in range(pcx-gen_dist.x,pcx+gen_dist.x+1):
@@ -230,8 +231,8 @@ func save_current_map():
 	data.store_double($player.spawnpoint.y)
 	data.store_double(normal_player_pos.x)
 	data.store_double(normal_player_pos.y)
-	data.store_double(internal_player_pos.x)
-	data.store_double(internal_player_pos.y)
+	data.store_double(editing_player_pos.x)
+	data.store_double(editing_player_pos.y)
 	data.store_16(map_id)
 	data.store_16(prev_map)
 	data.close()
@@ -271,10 +272,10 @@ func load_world():
 		#$player.position.x = data.get_double()
 		#$player.position.y = data.get_double()
 		normal_player_pos = Vector2(data.get_double(),data.get_double())
-		internal_player_pos = Vector2(data.get_double(),data.get_double())
+		editing_player_pos = Vector2(data.get_double(),data.get_double())
 		set_map_no_load(data.get_16())
 		if map_id == 2:
-			$player.position = internal_player_pos
+			$player.position = editing_player_pos
 		else:
 			$player.position = normal_player_pos
 		prev_map = data.get_16()

@@ -31,14 +31,19 @@ func _process(delta):
 		spawnpoint = position
 	if Input.is_action_just_pressed("R"):
 		position = spawnpoint
-	if Input.is_action_just_pressed("G") and get_parent().map.get_cellv(map_pos) == 6:
-		
-		if get_parent().map_id == 0:
-			get_parent().set_map(1)
-			get_parent().map.set_cellv(map_pos,6)
-		elif get_parent().map_id == 1:
-			get_parent().set_map(0)
-			get_parent().map.set_cellv(map_pos,6)
+	if Input.is_action_just_pressed("G"):
+		if get_parent().map.get_cellv(map_pos) == 6:
+			if get_parent().map_id == 0:
+				get_parent().set_map(1)
+				get_parent().map.set_cellv(map_pos,6)
+			elif get_parent().map_id == 1:
+				get_parent().set_map(0)
+				get_parent().map.set_cellv(map_pos,6)
+		elif get_parent().map.get_cellv(map_pos) == 7 and get_parent().map_id != 2:
+			get_parent().set_map(2)
+		elif get_parent().map_id == 2:
+			get_parent().set_map(get_parent().prev_map)
+			
 		
 
 	

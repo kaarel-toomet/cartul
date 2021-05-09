@@ -19,8 +19,8 @@ __meta__ = {
 }
 
 [node name="hotbar" type="HBoxContainer" parent="ScrollContainer"]
-margin_right = 64.0
-margin_bottom = 24.0
+margin_right = 72.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 64, 24 )
 custom_constants/separation = 0
 script = ExtResource( 2 )
@@ -29,23 +29,18 @@ __meta__ = {
 }
 
 [node name="slot1" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_right = 16.0
-margin_bottom = 24.0
 
 [node name="slot2" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 16.0
-margin_right = 32.0
-margin_bottom = 24.0
+margin_left = 18.0
+margin_right = 36.0
 
 [node name="slot3" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 32.0
-margin_right = 48.0
-margin_bottom = 24.0
+margin_left = 36.0
+margin_right = 54.0
 
 [node name="slot4" parent="ScrollContainer/hotbar" instance=ExtResource( 1 )]
-margin_left = 48.0
-margin_right = 64.0
-margin_bottom = 24.0
+margin_left = 54.0
+margin_right = 72.0
 
 [node name="held_item" type="TextureRect" parent="."]
 margin_left = 640.0

@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var max_item_id = 6
+var max_item_id = 7
 
 var held = -1
 var held_amount = 0
@@ -14,7 +14,7 @@ var stack_limit = 5
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
 				preload("res://assets/sand.png"), preload("res://assets/water.png"),
 				preload("res://assets/box.png"), preload("res://assets/frame.png"),
-				preload("res://assets/hole.png"), null]
+				preload("res://assets/hole.png"), preload("res://assets/editor.png"), null]
 #const slot_scene = preload("res://slot.tscn")
 
 # Called when the node enters the scene tree for the first time.

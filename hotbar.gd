@@ -116,7 +116,7 @@ func remove_slot():
 
 func _process(delta):
 	if Input.is_action_just_pressed("craft"):
-		print(tiles[0], " ",amounts[0],"   ",slots[0].item," ",slots[0].amount)
+		#print(tiles[0], " ",amounts[0],"   ",slots[0].item," ",slots[0].amount)
 		if tiles[selected] == 0: # asdfstone → frame
 			lose_item(0,1)
 			get_item(5,1)

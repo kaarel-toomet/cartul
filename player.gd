@@ -4,6 +4,7 @@ extends KinematicBody2D
 var paused = false
 
 var speed = 6
+var base_speed = 6
 #var scale = 2
 var spawnpoint = Vector2(0,0)
 
@@ -19,6 +20,8 @@ func _ready():
 
 func _process(delta):
 	if paused: return
+	var cx = floor(position.x/(get_parent().tile_size.x*get_parent().chunk_size.x*get_parent().scale.x))
+	var cy = floor(position.y/(get_parent().tile_size.y*get_parent().chunk_size.y*get_parent().scale.y))
 	if Input.is_action_pressed("up"):
 		move_and_slide(Vector2(0,-speed*60))
 	if Input.is_action_pressed("down"):
@@ -32,14 +35,22 @@ func _process(delta):
 	if Input.is_action_just_pressed("R"):
 		position = spawnpoint
 	if Input.is_action_just_pressed("G"):
-		if get_parent().map.get_cellv(map_pos) == 6:
+		if get_parent().map.get_cellv(map_pos) == get_parent().HOLE:
 			if get_parent().map_id == 0:
 				get_parent().set_map(1)
-				get_parent().map.set_cellv(map_pos,6)
-			elif get_parent().map_id == 1:
+				if get_parent().map.get_node("generated").get_cell(cx, cy) == -1:
+					get_parent().map.generate(cx, cy)
+				get_parent().map.set_cellv(map_pos,get_parent().STAIRS)
+		elif get_parent().map.get_cellv(map_pos) == get_parent().STAIRS:
+			if get_parent().map_id == 1:
 				get_parent().set_map(0)
-				get_parent().map.set_cellv(map_pos,6)
-		elif get_parent().map.get_cellv(map_pos) == 7 and get_parent().map_id != 2:
+				if get_parent().map.get_node("generated").get_cell(cx, cy) == -1:
+					get_parent().map.generate(cx, cy)
+				get_parent().map.set_cellv(map_pos,get_parent().HOLE)
+			#elif get_parent().map_id == 1:
+			#	get_parent().set_map(0)
+			#	get_parent().map.set_cellv(map_pos,get_parent().HOLE)
+		elif get_parent().map.get_cellv(map_pos) == get_parent().EDITOR and get_parent().map_id != 2:
 			get_parent().set_map(2)
 		elif get_parent().map_id == 2:
 			get_parent().set_map(get_parent().prev_map)
@@ -53,10 +64,14 @@ func _process(delta):
 	
 	get_parent().get_node("ui").get_node("Label").text = "X = " + str(position.x/get_parent().scale.x/get_parent().tile_size.x) + ", Y = " + str(position.y/get_parent().scale.y/get_parent().tile_size.y)
 	
-	if get_parent().map.get_cellv(map_pos) == 3:
-		speed = 3
+	if Input.is_action_pressed("shift"):
+		base_speed = 2
+	else: base_speed = 6
+	
+	if get_parent().map.get_cellv(map_pos) == get_parent().WATER:
+		speed = base_speed/2
 	else:
-		speed = 6
+		speed = base_speed
 #	if Input.is_action_just_pressed("E") and get_parent().map.get_cellv(map_pos) == 4 and !open_override:
 #		get_parent().data_coordinates = get_parent().data_coordinates.duplicate(true)
 #		get_parent().tile_data = get_parent().tile_data.duplicate(true)

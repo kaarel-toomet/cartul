@@ -11,20 +11,28 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 7
+var max_item_id = 8
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2, 7:-1}
 var breakto = normal_breakto
 
+const NONE = -1
+const ASDF = 0
+const GRASS = 1
+const SAND = 2
+const WATER = 3
+const BOX = 4
+const FRAME = 5
+const HOLE = 6
+const EDITOR = 7
+const STAIRS = 8
+
+
+
 var normal_player_pos = Vector2()
 var editing_player_pos = Vector2()
-
-"""Tile ids
--1: none, 0: asdfstone, 1: grass, 2:sand, 3:water, 4: box, 5: frame, 6: hole,
-7: editor
-"""
 
 var prev_map = 0
 #var tile_data = []

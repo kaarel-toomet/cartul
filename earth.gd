@@ -11,8 +11,8 @@ var chunk_size = Vector2(16,16)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	seed_ = get_parent().seed_
 	seed(seed_)
+	seed_ = get_parent().seed_
 	chunk_size = get_parent().chunk_size
 	noise.seed = seed_
 	noise.octaves = 5

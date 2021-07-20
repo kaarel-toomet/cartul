@@ -8,3 +8,6 @@ world/*
 exports/*
 
 export_presets.cfg
+
+.trash/*
+worlds/*

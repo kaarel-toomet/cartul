@@ -6,6 +6,7 @@ extends TileMap
 # var b = "text"
 var noise = OpenSimplexNoise.new()
 var bauxitenoise = OpenSimplexNoise.new()
+var beetnoise = OpenSimplexNoise.new()
 			
 var chunk_size = Vector2(16,16)
 var seed_ = 0
@@ -24,6 +25,11 @@ func _ready():
 	bauxitenoise.period = 100
 	bauxitenoise.persistence = 0.5
 	bauxitenoise.lacunarity = 2
+	beetnoise.seed = seed_+3
+	beetnoise.octaves = 3
+	beetnoise.period = 100
+	beetnoise.persistence = 0.8
+	beetnoise.lacunarity = 3
 
 func generate(cx,cy):
 	#if $generated.get_cell(cx,cy) == -1: return
@@ -40,6 +46,7 @@ func generate(cx,cy):
 				cell = get_parent().ASDF
 			
 			if bauxitenoise.get_noise_2d(lx,ly) > 0.55: cell = get_parent().BAUXITE
+			if beetnoise.get_noise_2d(lx,ly) > 0.4: cell = get_parent().BEETROOT
 			
 			if randf() < 0.001:
 				cell = get_parent().STAIRS

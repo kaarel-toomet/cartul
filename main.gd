@@ -11,11 +11,11 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 10
+var max_item_id = 11
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2, 10:-1}
-var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2, 7:-1, 9:5, 10:5}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2,  9:2, 10:2, 11:0}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5,  9:5, 10:5,  11:10}
 var breakto = normal_breakto
 
 const NONE = -1
@@ -30,6 +30,19 @@ const EDITOR = 7
 const STAIRS = 8
 const BAUXITE = 9
 const ALUMINIUM = 10
+const BEETROOT = 11
+
+
+
+"""
+tile addition checklist
+image
+add to tileset
+add to constants and breaktos here
+increase max_item_id here, in ui.gd and in slot.gd
+add texture to textures dict in ui.gd and slot.gd
+"""
+
 
 
 
@@ -47,6 +60,10 @@ var prev_map = 0
 #data_coordinates = [[0, 10, 10, 4]]
 var seed_ = 0
 
+
+
+
+
 var player = preload("res://player.tscn")
 
 var earth = preload("res://earth.tscn")
@@ -61,8 +78,10 @@ var string_map_ids = {0:"earth",1:"earth_underground",2:"player_map"}
 func set_map(new_map):
 	#print("2ewrtyuio")
 	prev_map = map_id
-	if prev_map == 2 and new_map == 2: prev_map = 0
-	if new_map == 2:
+	if prev_map == 2 and new_map == 2:
+		prev_map = 0
+		editing_player_pos = $player.position
+	elif new_map == 2:
 		
 		breakto = player_breakto
 		normal_player_pos = $player.position
@@ -200,8 +219,9 @@ func _process(delta):
 			if map.get_node("generated").get_cell(cx,cy) == -1:
 				map.generate(cx,cy)
 				map.get_node("generated").set_cell(cx,cy,0)
-				
-				
+	
+	
+	
 
 
 
@@ -239,10 +259,7 @@ func save_current_map():
 	data.store_64(seed_)
 	data.store_double($player.spawnpoint.x)
 	data.store_double($player.spawnpoint.y)
-	if map_id == 2:
-		editing_player_pos = $player.position
-	else:
-		normal_player_pos = $player.position
+	#print($player.position," ",normal_player_pos, "  ",editing_player_pos)
 	data.store_double(normal_player_pos.x)
 	data.store_double(normal_player_pos.y)
 	data.store_double(editing_player_pos.x)
@@ -428,6 +445,10 @@ func sync_player_map():
 	
 func _notification(what):
 	if what == NOTIFICATION_EXIT_TREE:
+		if map_id == 2:
+			editing_player_pos = $player.position
+		else:
+			normal_player_pos = $player.position
 		save_current_map()
 
 func unpause():

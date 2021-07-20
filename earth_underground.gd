@@ -5,6 +5,7 @@ extends TileMap
 # var a = 2
 # var b = "text"
 var noise = OpenSimplexNoise.new()
+var bauxitenoise = OpenSimplexNoise.new()
 			
 var chunk_size = Vector2(16,16)
 var seed_ = 0
@@ -18,6 +19,11 @@ func _ready():
 	noise.period = 30
 	noise.persistence = 0.5
 	noise.lacunarity = 2
+	bauxitenoise.seed = seed_+2
+	bauxitenoise.octaves = 3
+	bauxitenoise.period = 100
+	bauxitenoise.persistence = 0.5
+	bauxitenoise.lacunarity = 2
 
 func generate(cx,cy):
 	#if $generated.get_cell(cx,cy) == -1: return
@@ -31,14 +37,26 @@ func generate(cx,cy):
 			
 			
 			if noiseval >= 0.1:
-				cell = 0
+				cell = get_parent().ASDF
+			
+			if bauxitenoise.get_noise_2d(lx,ly) > 0.55: cell = get_parent().BAUXITE
 			
 			if randf() < 0.001:
-				cell = 8
+				cell = get_parent().STAIRS
 			
 			if get_cell(lx,ly) == -1:
 				set_cell(lx,ly,cell)
 			#$generated.set_cell(x,y,0)
+	for x in range(chunk_size.x):
+		for y in range(chunk_size.y):
+			var lx = chunk_size.x*cx+x
+			var ly = chunk_size.y*cy+y
+			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.1):
+				for i in range(-4, 5):
+					for j in range(-4, 5):
+						if abs(i)+abs(j)+randi()%5-2 < 3*(bauxitenoise.get_noise_2d(lx,ly)+0.2) and get_cell(lx+i,ly+j) == get_parent().ASDF:
+							set_cell(lx+i,ly+j,get_parent().BAUXITE)
+				
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

@@ -8,7 +8,7 @@ export var amounts=[5,6,7,8]
 var selected = 0
 var stack_limit = 5
 
-var max_item_id = 7
+var max_item_id = 734253647694808
 
 var mousein = false
 

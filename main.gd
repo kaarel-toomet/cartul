@@ -11,11 +11,11 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 8
+var max_item_id = 10
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2}
-var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2, 7:-1}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2, 10:-1}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5, 4:5, 5:-1, 6:2, 7:-1, 9:5, 10:5}
 var breakto = normal_breakto
 
 const NONE = -1
@@ -28,6 +28,8 @@ const FRAME = 5
 const HOLE = 6
 const EDITOR = 7
 const STAIRS = 8
+const BAUXITE = 9
+const ALUMINIUM = 10
 
 
 
@@ -237,6 +239,10 @@ func save_current_map():
 	data.store_64(seed_)
 	data.store_double($player.spawnpoint.x)
 	data.store_double($player.spawnpoint.y)
+	if map_id == 2:
+		editing_player_pos = $player.position
+	else:
+		normal_player_pos = $player.position
 	data.store_double(normal_player_pos.x)
 	data.store_double(normal_player_pos.y)
 	data.store_double(editing_player_pos.x)
@@ -281,6 +287,7 @@ func load_world():
 		#$player.position.y = data.get_double()
 		normal_player_pos = Vector2(data.get_double(),data.get_double())
 		editing_player_pos = Vector2(data.get_double(),data.get_double())
+		#print(normal_player_pos)
 		set_map_no_load(data.get_16())
 		if map_id == 2:
 			$player.position = editing_player_pos

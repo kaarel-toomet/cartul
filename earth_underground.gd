@@ -21,7 +21,7 @@ func _ready():
 	noise.persistence = 0.5
 	noise.lacunarity = 2
 	bauxitenoise.seed = seed_+2
-	bauxitenoise.octaves = 3
+	bauxitenoise.octaves = 5
 	bauxitenoise.period = 100
 	bauxitenoise.persistence = 0.5
 	bauxitenoise.lacunarity = 2
@@ -45,8 +45,8 @@ func generate(cx,cy):
 			if noiseval >= 0.1:
 				cell = get_parent().ASDF
 			
-			if bauxitenoise.get_noise_2d(lx,ly) > 0.55: cell = get_parent().BAUXITE
-			if beetnoise.get_noise_2d(lx,ly) > 0.4: cell = get_parent().BEETROOT
+			if bauxitenoise.get_noise_2d(lx,ly) > 0.5: cell = get_parent().BAUXITE
+			if beetnoise.get_noise_2d(lx,ly) > 0.43: cell = get_parent().BEETROOT
 			
 			if randf() < 0.001:
 				cell = get_parent().STAIRS

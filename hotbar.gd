@@ -14,9 +14,15 @@ var mousein = false
 
 signal mouse_exit
 
+
+var main
+
 var slot_num = 4
 onready var slots = [$slot1, $slot2, $slot3, $slot4]
 func _ready():
+	
+	main = get_parent().get_parent().get_parent()
+	
 	#self.connect("mouse_exit", get_parent(), "inventory_mouse_exited", [self])
 	for s in range(slot_num):
 		slots[s].item = tiles[s]
@@ -63,8 +69,10 @@ func get_item(item, amount):
 func can_lose(item, amount):
 	var n = amount
 	for s in range(slot_num):
-		if s == item:
+		#print(s, " ",n)
+		if tiles[s] == item:
 			n -= amounts[s]
+			
 		if n <= 0: return true
 	return false
 
@@ -117,12 +125,13 @@ func remove_slot():
 func _process(delta):
 	if Input.is_action_just_pressed("craft"):
 		#print(tiles[0], " ",amounts[0],"   ",slots[0].item," ",slots[0].amount)
-		if tiles[selected] == 0: # asdfstone → frame
-			lose_item(0,1)
-			get_item(5,1)
-		elif tiles[selected] == 5: # frame → editor
-			lose_item(5,1)
-			get_item(7,1)
+		if tiles[selected] == main.ALUMINIUM and can_lose(main.ALUMINIUM,5) and can_lose(main.ASDF,2): # aluminiunm → crafter
+			lose_item(main.ASDF,2)
+			lose_item(main.ALUMINIUM,5)
+			get_item(main.CRAFTER,1)
+		#elif tiles[selected] == 5: # frame → editor
+		#	lose_item(main.FRAME,1)
+		#	get_item(main.EDITOR,1)
 	#print(stack_limit)
 	if selected >= slot_num: selected = 0
 	for s in slots:

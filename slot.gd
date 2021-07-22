@@ -6,7 +6,7 @@ var id = 0
 var item = -1
 var amount = 0
 
-var max_item_id = 11
+var max_item_id = 12
 
 
 
@@ -15,7 +15,8 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/box.png"), preload("res://assets/frame.png"),
 				preload("res://assets/hole.png"), preload("res://assets/editor.png"),
 				preload("res://assets/stairs.png"), preload("res://assets/bauxite.png"),
-				preload("res://assets/aluminium.png"), preload("res://assets/beetroot.png"), null]
+				preload("res://assets/aluminium.png"), preload("res://assets/beetroot.png"),
+				preload("res://assets/machine.png"), null]
 
 
 

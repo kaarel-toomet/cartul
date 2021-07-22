@@ -11,11 +11,11 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 11
+var max_item_id = 12
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2,  9:2, 10:2, 11:0}
-var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5,  9:5, 10:5,  11:10}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2,  9:2, 10:2, 11:0,  12:-1}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5,  9:5, 10:5, 11:10, 12:5}
 var breakto = normal_breakto
 
 const NONE = -1
@@ -31,6 +31,7 @@ const STAIRS = 8
 const BAUXITE = 9
 const ALUMINIUM = 10
 const BEETROOT = 11
+const CRAFTER = 12
 
 
 

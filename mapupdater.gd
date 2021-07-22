@@ -7,7 +7,7 @@ var map
 
 var update_timer = 1
 
-var aluninium_beet_smelting_chance = 0.1
+var aluminium_beet_smelting_chance = 0.05
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,18 +25,38 @@ func update():
 			
 			if map.get_cell(x,y) == p.BEETROOT:
 				#print(x," ",y)
-				if map.get_cell(x+1,y) == p.BAUXITE and randf() < aluninium_beet_smelting_chance:
+				if map.get_cell(x+1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
 					map.set_cell(x+1,y,p.ALUMINIUM)
 					map.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x-1,y) == p.BAUXITE and randf() < aluninium_beet_smelting_chance:
+				elif map.get_cell(x-1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
 					map.set_cell(x-1,y,p.ALUMINIUM)
 					map.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y+1) == p.BAUXITE and randf() < aluninium_beet_smelting_chance:
+				elif map.get_cell(x,y+1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
 					map.set_cell(x,y+1,p.ALUMINIUM)
 					map.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y-1) == p.BAUXITE and randf() < aluninium_beet_smelting_chance:
+				elif map.get_cell(x,y-1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
 					map.set_cell(x,y-1,p.ALUMINIUM)
 					map.set_cell(x,y,p.breakto[p.BEETROOT])
+					
+					
+			elif map.get_cell(x,y) == p.CRAFTER:
+				var d = map.get_cell(x,y+1)
+				var l = map.get_cell(x-1,y)
+				var u = map.get_cell(x,y-1)
+				var r = map.get_cell(x+1,y)
+				
+				if d == p.NONE and l == p.ALUMINIUM and u == p.ALUMINIUM and r == p.ALUMINIUM:
+					map.set_cell(x,y+1,p.FRAME)
+					map.set_cell(x-1,y,p.breakto[l])
+					map.set_cell(x,y-1,p.breakto[u])
+					map.set_cell(x+1,y,p.breakto[r])
+				elif d == p.NONE and l == p.ALUMINIUM and u == p.BEETROOT and r == p.HOLE:
+					map.set_cell(x,y+1,p.EDITOR)
+					map.set_cell(x-1,y,p.breakto[l])
+					map.set_cell(x,y-1,p.breakto[u])
+					map.set_cell(x+1,y,p.breakto[r])
+				
+				
 	
 
 

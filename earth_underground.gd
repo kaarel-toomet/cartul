@@ -44,8 +44,9 @@ func generate(cx,cy):
 			
 			if noiseval >= 0.1:
 				cell = get_parent().ASDF
+				if bauxitenoise.get_noise_2d(lx,ly) > 0.53: cell = get_parent().BAUXITE
 			
-			if bauxitenoise.get_noise_2d(lx,ly) > 0.5: cell = get_parent().BAUXITE
+			
 			if beetnoise.get_noise_2d(lx,ly) > 0.43: cell = get_parent().BEETROOT
 			
 			if randf() < 0.001:

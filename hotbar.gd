@@ -140,6 +140,7 @@ func _process(delta):
 	
 	if !get_parent().get_global_rect().has_point(get_viewport().get_mouse_position()):# and mousein:
 		mousein = false
+		#print("eeeeeeeeeeeeeeeeeeeeeeeeeeee")
 		get_parent().get_parent().slot_with_mouse = null
 		#emit_signal("mouse_exit")
 		#print("awyfg")

@@ -10,7 +10,7 @@ script = ExtResource( 3 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
-margin_right = -512.0
+margin_right = 2.32221e+06
 margin_bottom = 36.0
 rect_min_size = Vector2( 36, 36 )
 rect_scale = Vector2( 2, 2 )

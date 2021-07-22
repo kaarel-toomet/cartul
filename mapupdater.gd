@@ -8,6 +8,7 @@ var map
 var update_timer = 1
 
 var aluminium_beet_smelting_chance = 0.05
+var furnace_deactivation_chance = 0.5
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,7 +39,32 @@ func update():
 					map.set_cell(x,y-1,p.ALUMINIUM)
 					map.set_cell(x,y,p.breakto[p.BEETROOT])
 					
-					
+			elif map.get_cell(x,y) == p.INACTIVEFURNACE:
+				if map.get_cell(x+1,y) == p.BEETROOT:
+					map.set_cell(x+1,y,p.breakto[p.BEETROOT])
+					map.set_cell(x,y,p.ACTIVEFURNACE)
+				elif map.get_cell(x-1,y) == p.BEETROOT:
+					map.set_cell(x-1,y,p.breakto[p.BEETROOT])
+					map.set_cell(x,y,p.ACTIVEFURNACE)
+				elif map.get_cell(x,y+1) == p.BEETROOT:
+					map.set_cell(x,y+1,p.breakto[p.BEETROOT])
+					map.set_cell(x,y,p.ACTIVEFURNACE)
+				elif map.get_cell(x,y-1) == p.BEETROOT:
+					map.set_cell(x,y-1,p.breakto[p.BEETROOT])
+					map.set_cell(x,y,p.ACTIVEFURNACE)
+			
+			elif map.get_cell(x,y) == p.ACTIVEFURNACE:
+				if map.get_cell(x+1,y) == p.BAUXITE:
+					map.set_cell(x+1,y,p.ALUMINIUM)
+				if map.get_cell(x-1,y) == p.BAUXITE:
+					map.set_cell(x-1,y,p.ALUMINIUM)
+				if map.get_cell(x,y+1) == p.BAUXITE:
+					map.set_cell(x,y+1,p.ALUMINIUM)
+				if map.get_cell(x,y-1) == p.BAUXITE:
+					map.set_cell(x,y-1,p.ALUMINIUM)
+				if randf() < furnace_deactivation_chance:
+					map.set_cell(x,y,p.INACTIVEFURNACE)
+			
 			elif map.get_cell(x,y) == p.CRAFTER:
 				var d = map.get_cell(x,y+1)
 				var l = map.get_cell(x-1,y)
@@ -52,6 +78,11 @@ func update():
 					map.set_cell(x+1,y,p.breakto[r])
 				elif d == p.NONE and l == p.ALUMINIUM and u == p.BEETROOT and r == p.HOLE:
 					map.set_cell(x,y+1,p.EDITOR)
+					map.set_cell(x-1,y,p.breakto[l])
+					map.set_cell(x,y-1,p.breakto[u])
+					map.set_cell(x+1,y,p.breakto[r])
+				elif d == p.NONE and l == p.ALUMINIUM and u == p.ASDF and r == p.ASDF:
+					map.set_cell(x,y+1,p.INACTIVEFURNACE)
 					map.set_cell(x-1,y,p.breakto[l])
 					map.set_cell(x,y-1,p.breakto[u])
 					map.set_cell(x+1,y,p.breakto[r])

@@ -11,11 +11,13 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
-var max_item_id = 12
+var max_item_id = 15
 var stack_limit = 2147483647
 
-var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2,  9:2, 10:2, 11:0,  12:-1}
-var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5,  9:5, 10:5, 11:10, 12:5}
+var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
+					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1}
+var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
+					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5}
 var breakto = normal_breakto
 
 const NONE = -1
@@ -32,6 +34,9 @@ const BAUXITE = 9
 const ALUMINIUM = 10
 const BEETROOT = 11
 const CRAFTER = 12
+const GOLD = 13
+const ACTIVEFURNACE = 14
+const INACTIVEFURNACE = 15
 
 
 
@@ -169,6 +174,8 @@ func _process(delta):
 	var mpos = get_global_mouse_position()
 	var mx = floor(mpos.x/tile_size.x/scale.x)
 	var my = floor(mpos.y/tile_size.y/scale.y)
+	
+	
 	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 48:
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
@@ -185,7 +192,10 @@ func _process(delta):
 #					data_coordinates.remove(data_coordinates.find([map_id, mx, my, 4]))
 #					for i in range(len(data[0])):
 #						$ui/hotbar.get_item(data[0][i], data[1][i])
-			map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
+			if map.get_cell(mx,my) == BEETROOT and randf() < 0.01:
+				map.set_cell(mx,my,GOLD)
+			else:
+				map.set_cell(mx,my,breakto[map.get_cell(mx,my)])
 			
 	if Input.is_action_just_pressed("rclick") and get_viewport().get_mouse_position().y > 48:
 #		print(data_coordinates)

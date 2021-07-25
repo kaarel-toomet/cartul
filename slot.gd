@@ -17,7 +17,8 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/stairs.png"), preload("res://assets/bauxite.png"),
 				preload("res://assets/aluminium.png"), preload("res://assets/beetroot.png"),
 				preload("res://assets/machine.png"),preload("res://assets/goldblock.png"),
-				preload("res://assets/furnace.png"), preload("res://assets/inactivefurnace.png"), null]
+				preload("res://assets/furnace.png"), preload("res://assets/inactivefurnace.png"),
+				preload("res://assets/mercury.png"), preload("res://assets/palladium.png"), null]
 
 
 

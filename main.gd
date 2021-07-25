@@ -11,14 +11,21 @@ var gen_dist = Vector2(1,1)
 
 var paused = false
 
+
+var mouse_on_monster = false
+
+
 var max_item_id = 15
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
-					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1}
+					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
-					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5}
+					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5}
 var breakto = normal_breakto
+
+
+
 
 const NONE = -1
 const ASDF = 0
@@ -37,6 +44,8 @@ const CRAFTER = 12
 const GOLD = 13
 const ACTIVEFURNACE = 14
 const INACTIVEFURNACE = 15
+const MERCURY = 16
+const PALLADIUM = 17
 
 
 
@@ -47,6 +56,7 @@ add to tileset
 add to constants and breaktos here
 increase max_item_id here, in ui.gd and in slot.gd
 add texture to textures dict in ui.gd and slot.gd
+add to no_spawning_on in mobspawning.gd if needed
 """
 
 
@@ -176,7 +186,7 @@ func _process(delta):
 	var my = floor(mpos.y/tile_size.y/scale.y)
 	
 	
-	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 48:
+	if Input.is_action_just_pressed("lclick") and get_viewport().get_mouse_position().y > 48 and !mouse_on_monster:
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
@@ -201,6 +211,7 @@ func _process(delta):
 #		print(data_coordinates)
 #		print(tile_data)
 		#print(map.get_cell(mx,my))
+		mouse_on_monster = false
 		var s = $ui/ScrollContainer/hotbar.selected
 		var b = $ui/ScrollContainer/hotbar.tiles[s]
 		

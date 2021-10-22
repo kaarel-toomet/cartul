@@ -6,7 +6,7 @@ var id = 0
 var item = -1
 var amount = 0
 
-var max_item_id = 15
+var max_item_id = 17
 
 
 

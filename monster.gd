@@ -15,6 +15,7 @@ func _ready():
 
 
 func _process(delta):
+	if get_parent().get_parent().paused: return
 	var ppos = get_parent().get_parent().get_node("player").position
 	move_and_slide((ppos - position).normalized()*speed*60)
 	
@@ -23,6 +24,7 @@ func _process(delta):
 		#print(health)
 	if health <= 0:
 		#print("dddddd")
+		get_parent().get_parent().monster_num -= 1
 		queue_free()
 	
 	

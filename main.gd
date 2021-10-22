@@ -15,7 +15,7 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 15
+var max_item_id = 17
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
@@ -25,6 +25,10 @@ var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5
 var breakto = normal_breakto
 
 
+#var monsters = []
+#format: [ [type, map, x, y, health, extra1, extra2, extra3, extra4] ]
+var monster_num = 0
+var monster_max = 100
 
 
 const NONE = -1
@@ -47,13 +51,81 @@ const INACTIVEFURNACE = 15
 const MERCURY = 16
 const PALLADIUM = 17
 
+var names_en = {
+	-1:"",
+	0:"Stone",
+	1:"Grass",
+	2:"Sand",
+	3:"Water",
+	4:"Box",
+	5:"Frame",
+	6:"Hole (Cave entrance)",
+	7:"Editor",
+	8:"Stairs (Cave exit)",
+	9:"Bauxite (aluminium ore)",
+	10:"Aluminium",
+	11:"Beetroot",
+	12:"Assembler",
+	13:"Gold",
+	14:"Active furnace",
+	15:"Inactive furnace",
+	16:"Mercury",
+	17:"Palladium"
+}
 
+var names_et = {
+	-1:"",
+	0:"Kivi",
+	1:"Muru",
+	2:"Liiv",
+	3:"Vesi",
+	4:"Kast",
+	5:"Raam",
+	6:"Auk (viib koopasse)",
+	7:"asdfadrtergagdfgxcv",
+	8:"Trepp (viib koopast välja)",
+	9:"Boksiit (alumiiniumimaak)",
+	10:"Alumiinium",
+	11:"Peet",
+	12:"Ehitusmasin",
+	13:"Kuld",
+	14:"Põlev ahi",
+	15:"Ahi",
+	16:"Elavhõbe (elus)",
+	17:"Pallaadium"
+}
+
+var names_fcgvgdff = {
+	-1:"djkkdghjdghjgh",
+	0:"ghjghjdghdghj",
+	1:"dghjtdtjtyj",
+	2:"wtyujjstyjsty",
+	3:"rtfsjtsutyu",
+	4:"srtysrusntyunghung                        ",
+	5:"arybrtsbyrtsby",
+	6:"svrtyvsrty",
+	7:"kdghjdghj",
+	8:"¶¶¶¶¶¶¶¶¶¶¶¶¶®®®®®®®®®®®®®®Æðđpoiiiiiiiiiiiiiiiiiiiijhmpatgio",
+	9:"adfgdfgadgaerht",
+	10:"styuktyudtmudy",
+	11:"dtnuyydtyundy",
+	12:"56s568tdmuydnudtu",
+	13:"s56snutytysbuy",
+	14:"tybutybtyu bstybustys",
+	15:"sbtybustystbyusbty",
+	16:"ujwstyuwtyuwtuetyuetyeuyuetyuetyuetyu",
+	17:"qqqqqqqqerytiujljjh"
+}
+
+var names_ = {
+	-1:"",0:"",1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:" ",16:"",17:""
+}
 
 """
 tile addition checklist
 image
 add to tileset
-add to constants and breaktos here
+add to constants, breaktos and names here
 increase max_item_id here, in ui.gd and in slot.gd
 add texture to textures dict in ui.gd and slot.gd
 add to no_spawning_on in mobspawning.gd if needed
@@ -255,12 +327,14 @@ func save_current_map():
 	
 	var d = Directory.new()
 	if not d.dir_exists("res://world"):
-		print("world directory doesn't exist, creating...")
+		print("world directory doesn't exist, creating.")
 		d.make_dir("res://world")
-	#print("qqqqqqsdfgh")
 	var chunks := File.new()
 	chunks.open("res://world/map_" + string_map_ids[map_id],File.WRITE)
-	#print("aqqqq")
+	
+	chunks.store_double($player.spawnpoint.x)
+	chunks.store_double($player.spawnpoint.y)
+	
 	for chunk in map.get_node("generated").get_used_cells():
 		chunks.store_64(chunk.x)
 		chunks.store_64(chunk.y)
@@ -279,8 +353,6 @@ func save_current_map():
 		data.store_16($ui/ScrollContainer/hotbar.amounts[s])
 	#$player.position.x=999
 	data.store_64(seed_)
-	data.store_double($player.spawnpoint.x)
-	data.store_double($player.spawnpoint.y)
 	#print($player.position," ",normal_player_pos, "  ",editing_player_pos)
 	data.store_double(normal_player_pos.x)
 	data.store_double(normal_player_pos.y)
@@ -288,7 +360,22 @@ func save_current_map():
 	data.store_double(editing_player_pos.y)
 	data.store_16(map_id)
 	data.store_16(prev_map)
+	data.store_double($player.health)
 	data.close()
+	
+	var mobs := File.new()
+	mobs.open("res://world/mobs_" + string_map_ids[map_id], File.WRITE)
+	for mob in $mobs.get_children():
+		mobs.store_16(mob.type)
+		mobs.store_double(mob.position.x)
+		mobs.store_double(mob.position.y)
+		mobs.store_16(mob.health)
+		mobs.store_64(0)
+		mobs.store_64(0)
+		mobs.store_64(0)
+		mobs.store_64(0)
+		
+	mobs.close()
 	
 #	var tiledata := File.new()
 #	tiledata.open("res://world/tile_data_" + string_map_ids[map_id], File.WRITE)
@@ -312,6 +399,8 @@ func save_current_map():
 	
 func load_world():
 	
+	for m in $mobs.get_children(): m.queue_free()
+	
 	var data := File.new()
 	data.open("res://world/data",File.READ)
 	if data.file_exists("res://world/data"):
@@ -320,8 +409,6 @@ func load_world():
 		for s in range($ui/ScrollContainer/hotbar.slot_num):
 			$ui/ScrollContainer/hotbar.set_item(s,data.get_16(),data.get_16())
 		seed_ = data.get_64()
-		$player.spawnpoint.x = data.get_double()
-		$player.spawnpoint.y = data.get_double()
 		#$player.position.x = data.get_double()
 		#$player.position.y = data.get_double()
 		normal_player_pos = Vector2(data.get_double(),data.get_double())
@@ -333,6 +420,7 @@ func load_world():
 		else:
 			$player.position = normal_player_pos
 		prev_map = data.get_16()
+		$player.health = data.get_double()
 	else:
 		print("data file not found")
 	data.close()
@@ -342,6 +430,8 @@ func load_world():
 	chunks.open("res://world/map_" + string_map_ids[map_id],File.READ)
 	
 	if chunks.file_exists("res://world/map_" + string_map_ids[map_id]):
+		$player.spawnpoint.x = chunks.get_double()
+		$player.spawnpoint.y = chunks.get_double()
 		while chunks.get_position() != chunks.get_len():
 			var chunk := Vector2()
 			chunk.x = chunks.get_64()
@@ -353,8 +443,35 @@ func load_world():
 		chunks.close()
 		
 	else:
-		print("chunks file not found")
+		print("chunks file for " + string_map_ids[map_id] + " not found")
 		
+	
+	var mobs := File.new()
+	
+	mobs.open("res://world/mobs_" + string_map_ids[map_id], File.READ)
+
+	if mobs.file_exists("res://world/mobs_" + string_map_ids[map_id]):
+		#var i = 0
+		var monster_scene = load("res://monster.tscn")
+		while mobs.get_position() < mobs.get_len():
+			var mob = monster_scene.instance()
+			mob.scale = scale
+			mob.type = mobs.get_16()
+			mob.position = Vector2(mobs.get_double(),mobs.get_double())
+			mob.health = mobs.get_16()
+			$mobs.add_child(mob)
+			monster_num += 1
+			
+			mobs.get_64()
+			mobs.get_64()
+			mobs.get_64()
+			mobs.get_64()
+			
+			#i += 1
+	else:
+		print("mobs file for " + string_map_ids[map_id] + " not found")
+	mobs.close()
+	
 	sync_player_map()
 	
 	
@@ -391,10 +508,18 @@ func load_world():
 		
 		
 func load_map():
+	
+	for m in $mobs.get_children(): m.queue_free()
+	monster_num = 0
+	
 	var chunks := File.new()
 	chunks.open("res://world/map_" + string_map_ids[map_id],File.READ)
 	
 	if chunks.file_exists("res://world/map_" + string_map_ids[map_id]):
+		
+		$player.spawnpoint.x = chunks.get_double()
+		$player.spawnpoint.y = chunks.get_double()
+		
 		while chunks.get_position() != chunks.get_len():
 			var chunk := Vector2()
 			chunk.x = chunks.get_64()
@@ -406,9 +531,34 @@ func load_map():
 		chunks.close()
 		
 	else:
-		print("chunks file not found")
+		print("chunks file for " + string_map_ids[map_id] + " not found")
 	
+	var mobs := File.new()
 	
+	mobs.open("res://world/mobs_" + string_map_ids[map_id], File.READ)
+
+	if mobs.file_exists("res://world/mobs_" + string_map_ids[map_id]):
+		#var i = 0
+		var monster_scene = load("res://monster.tscn")
+		while mobs.get_position() < mobs.get_len():
+			var mob = monster_scene.instance()
+			mob.scale = scale
+			mob.type = mobs.get_16()
+			mob.position = Vector2(mobs.get_double(),mobs.get_double())
+			mob.health = mobs.get_16()
+			#print(mob)
+			$mobs.add_child(mob)
+			monster_num += 1
+			
+			mobs.get_64()
+			mobs.get_64()
+			mobs.get_64()
+			mobs.get_64()
+			
+			#i += 1
+	else:
+		print("mobs file for " + string_map_ids[map_id] + " not found")
+	mobs.close()
 	
 	#print(data_coordinates)
 	#print(tile_data)
@@ -445,8 +595,9 @@ func sync_player_map():
 	
 	var chunks := File.new()
 	chunks.open("res://world/map_player_map",File.READ)
-	
 	if chunks.file_exists("res://world/map_player_map"):
+		chunks.get_double()
+		chunks.get_double()	
 		while chunks.get_position() != chunks.get_len():
 			var chunk := Vector2()
 			chunk.x = chunks.get_64()

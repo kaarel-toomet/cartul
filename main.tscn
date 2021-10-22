@@ -21,4 +21,4 @@ script = ExtResource( 3 )
 [node name="mobspawning" type="Node" parent="."]
 script = ExtResource( 4 )
 
-[node name="kollid" type="Node" parent="."]
+[node name="mobs" type="Node" parent="."]

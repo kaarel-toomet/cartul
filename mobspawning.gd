@@ -20,6 +20,7 @@ func _ready():
 func _process(delta):
 	if main.paused: return
 	if main.map_id == 2: return
+	if main.monster_num >= main.monster_max: return
 	
 	if randf() < 0.01:
 		var dx = rand_range(-main.scale.x*main.tile_size.x*main.chunk_size.x*3,
@@ -40,5 +41,7 @@ func _process(delta):
 		mob.scale = main.scale
 		mob.type = 0
 		mob.position = Vector2(x,y)
-		main.get_node("kollid").add_child(mob)
+		main.get_node("mobs").add_child(mob)
+		main.monster_num += 1
+		#main.mobs.append([0, mob.position.x, mob.position.y, main.map_id, 5,   0,0,0,0])
 		

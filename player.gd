@@ -5,6 +5,8 @@ var paused = false
 
 var speed = 6
 var base_speed = 6
+var health = 30
+var attacked = 0
 #var scale = 2
 var spawnpoint = Vector2(0,0)
 
@@ -62,7 +64,14 @@ func _process(delta):
 	map_pos = Vector2(floor(position.x/get_parent().scale.x/get_parent().tile_size.x),
 	floor(position.y/get_parent().scale.y/get_parent().tile_size.y))
 	
+	health -= attacked
+	
+	if health <= 0:
+		position = spawnpoint
+		health = 30
+	
 	get_parent().get_node("ui").get_node("Label").text = "X = " + str(position.x/get_parent().scale.x/get_parent().tile_size.x) + ", Y = " + str(position.y/get_parent().scale.y/get_parent().tile_size.y)
+	get_parent().get_node("ui").get_node("box").get_node("healthlabel").text = str(health) + " / 30"
 	
 	if Input.is_action_pressed("shift"):
 		base_speed = 2
@@ -99,3 +108,15 @@ func _process(delta):
 #	open_override = false
 	
 	
+
+
+func _on_Area2D_area_entered(area):
+	if area.get_parent().get_parent() == get_parent().get_node("mobs"):
+		if area.get_parent().type == 0:
+			attacked = 0.02
+
+
+func _on_Area2D_area_exited(area):
+	if area.get_parent().get_parent() == get_parent().get_node("mobs"):
+		if area.get_parent().type == 0:
+			attacked = 0

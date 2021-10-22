@@ -15,13 +15,13 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 17
+var max_item_id = 19
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
-					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1}
+					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1, 19:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
-					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5}
+					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5, 18:5, 19:5}
 var breakto = normal_breakto
 
 
@@ -50,6 +50,8 @@ const ACTIVEFURNACE = 14
 const INACTIVEFURNACE = 15
 const MERCURY = 16
 const PALLADIUM = 17
+const MONSTERPART = 18
+const ERROR = 19
 
 var names_en = {
 	-1:"",
@@ -70,7 +72,9 @@ var names_en = {
 	14:"Active furnace",
 	15:"Inactive furnace",
 	16:"Mercury",
-	17:"Palladium"
+	17:"Palladium",
+	18:"Monster part",
+	19:"Error"
 }
 
 var names_et = {
@@ -92,7 +96,9 @@ var names_et = {
 	14:"Põlev ahi",
 	15:"Ahi",
 	16:"Elavhõbe (elus)",
-	17:"Pallaadium"
+	17:"Pallaadium",
+	18:"Kollitükk",
+	19:"Rike"
 }
 
 var names_fcgvgdff = {
@@ -114,7 +120,9 @@ var names_fcgvgdff = {
 	14:"tybutybtyu bstybustys",
 	15:"sbtybustystbyusbty",
 	16:"ujwstyuwtyuwtuetyuetyeuyuetyuetyuetyu",
-	17:"qqqqqqqqerytiujljjh"
+	17:"qqqqqqqqerytiujljjh",
+	18:"dfgadtaertertaertra",
+	19:"afiguahrptau8ertah"
 }
 
 var names_ = {
@@ -122,7 +130,7 @@ var names_ = {
 }
 
 """
-tile addition checklist
+  tile addition checklist
 image
 add to tileset
 add to constants, breaktos and names here
@@ -369,7 +377,7 @@ func save_current_map():
 		mobs.store_16(mob.type)
 		mobs.store_double(mob.position.x)
 		mobs.store_double(mob.position.y)
-		mobs.store_16(mob.health)
+		mobs.store_double(mob.health)
 		mobs.store_64(0)
 		mobs.store_64(0)
 		mobs.store_64(0)
@@ -458,7 +466,7 @@ func load_world():
 			mob.scale = scale
 			mob.type = mobs.get_16()
 			mob.position = Vector2(mobs.get_double(),mobs.get_double())
-			mob.health = mobs.get_16()
+			mob.health = mobs.get_double()
 			$mobs.add_child(mob)
 			monster_num += 1
 			
@@ -545,7 +553,7 @@ func load_map():
 			mob.scale = scale
 			mob.type = mobs.get_16()
 			mob.position = Vector2(mobs.get_double(),mobs.get_double())
-			mob.health = mobs.get_16()
+			mob.health = mobs.get_double()
 			#print(mob)
 			$mobs.add_child(mob)
 			monster_num += 1

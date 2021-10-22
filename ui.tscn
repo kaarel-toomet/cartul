@@ -12,22 +12,22 @@ script = ExtResource( 3 )
 [node name="box" type="ColorRect" parent="."]
 show_behind_parent = true
 anchor_right = 1.0
-margin_bottom = 104.0
+margin_bottom = 88.0
 color = Color( 0, 0, 0, 0.752941 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="healthsprite" type="Sprite" parent="box"]
-position = Vector2( 16, 80 )
+position = Vector2( 16, 72 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 4 )
 
 [node name="healthlabel" type="Label" parent="box"]
 margin_left = 32.0
-margin_top = 72.0
+margin_top = 64.0
 margin_right = 72.0
-margin_bottom = 86.0
+margin_bottom = 78.0
 text = "30/30"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -87,9 +87,9 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -120.0
-margin_top = 80.0
+margin_top = 64.0
 margin_right = 125.0
-margin_bottom = 96.0
+margin_bottom = 80.0
 text = "X = -31415.926535, Y= -22222.222222"
 align = 1
 valign = 1

@@ -49,7 +49,7 @@ func generate(cx,cy):
 			
 			if beetnoise.get_noise_2d(lx,ly) > 0.43: cell = get_parent().BEETROOT
 			
-			if randf() < 0.001:
+			if randf() < 0.0001:
 				cell = get_parent().STAIRS
 			
 			if get_cell(lx,ly) == -1:

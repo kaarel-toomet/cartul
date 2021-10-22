@@ -7,10 +7,13 @@ var type = 0
 var speed = 3
 
 var mousein = false
-var health = 5
+var health = 5.0
+var main
+
+var map_pos
 
 func _ready():
-	pass
+	main = get_parent().get_parent()
 
 
 
@@ -24,10 +27,17 @@ func _process(delta):
 		#print(health)
 	if health <= 0:
 		#print("dddddd")
-		get_parent().get_parent().monster_num -= 1
+		main.monster_num -= 1
+		main.get_node("ui").get_node("ScrollContainer").get_node("hotbar").get_item(
+			main.MONSTERPART, 1
+		)
 		queue_free()
 	
+	map_pos = Vector2(floor(position.x/main.scale.x/main.tile_size.x),
+	floor(position.y/main.scale.y/main.tile_size.y))
 	
+	if main.map.get_cellv(map_pos) == main.ERROR:
+		health -= 0.1
 
 
 

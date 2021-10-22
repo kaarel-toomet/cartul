@@ -86,7 +86,35 @@ func update():
 					map.set_cell(x-1,y,p.breakto[l])
 					map.set_cell(x,y-1,p.breakto[u])
 					map.set_cell(x+1,y,p.breakto[r])
+			
+			elif map.get_cell(x,y) == p.NONE and p.map_id != 2:
+				if randf() < 0.00001:
+					map.set_cell(x,y,p.ERROR)
+					
+			elif map.get_cell(x,y) == p.ERROR and randf() < 0.5:
+				var d = map.get_cell(x,y+1)
+				var l = map.get_cell(x-1,y)
+				var u = map.get_cell(x,y-1)
+				var r = map.get_cell(x+1,y)
+				var m = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
+				#var n = 4
 				
+				if randf() < 1.0/4.0 and m.has(d):
+					#print("d", d)
+					map.set_cell(x,y,d)
+					map.set_cell(x,y+1,p.ERROR)
+				elif randf() < 1.0/3.0 and m.has(l):
+					#print("l", l)
+					map.set_cell(x,y,l)
+					map.set_cell(x-1,y,p.ERROR)
+				elif randf() < 1.0/2.0 and m.has(u):
+					#print("u", u)
+					map.set_cell(x,y,u)
+					map.set_cell(x,y-1,p.ERROR)
+				elif m.has(r):
+					#print("r", r)
+					map.set_cell(x,y,r)
+					map.set_cell(x+1,y,p.ERROR)
 				
 	
 

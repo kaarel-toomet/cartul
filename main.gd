@@ -53,81 +53,30 @@ const PALLADIUM = 17
 const MONSTERPART = 18
 const ERROR = 19
 
-var names_en = {
-	-1:"",
-	0:"Stone",
-	1:"Grass",
-	2:"Sand",
-	3:"Water",
-	4:"Box",
-	5:"Frame",
-	6:"Hole (Cave entrance)",
-	7:"Editor",
-	8:"Stairs (Cave exit)",
-	9:"Bauxite (aluminium ore)",
-	10:"Aluminium",
-	11:"Beetroot",
-	12:"Assembler",
-	13:"Gold",
-	14:"Active furnace",
-	15:"Inactive furnace",
-	16:"Mercury",
-	17:"Palladium",
-	18:"Monster part",
-	19:"Error"
+var names = {
+	-1:"tile_none",
+	0:"tile_stone",
+	1:"tile_grass",
+	2:"tile_sand",
+	3:"tile_water",
+	4:"tile_box",
+	5:"tile_frame",
+	6:"tile_hole",
+	7:"tile_editor",
+	8:"tile_stairs",
+	9:"tile_bauxite",
+	10:"tile_aluminium",
+	11:"tile_beetroot",
+	12:"tile_assembler",
+	13:"tile_gold",
+	14:"tile_active_furnace",
+	15:"tile_inactive_furnace",
+	16:"tile_mercury",
+	17:"tile_palladium",
+	18:"tile_monster_part",
+	19:"tile_error"
 }
 
-var names_et = {
-	-1:"",
-	0:"Kivi",
-	1:"Muru",
-	2:"Liiv",
-	3:"Vesi",
-	4:"Kast",
-	5:"Raam",
-	6:"Auk (viib koopasse)",
-	7:"asdfadrtergagdfgxcv",
-	8:"Trepp (viib koopast välja)",
-	9:"Boksiit (alumiiniumimaak)",
-	10:"Alumiinium",
-	11:"Peet",
-	12:"Ehitusmasin",
-	13:"Kuld",
-	14:"Põlev ahi",
-	15:"Ahi",
-	16:"Elavhõbe (elus)",
-	17:"Pallaadium",
-	18:"Kollitükk",
-	19:"Rike"
-}
-
-var names_fcgvgdff = {
-	-1:"djkkdghjdghjgh",
-	0:"ghjghjdghdghj",
-	1:"dghjtdtjtyj",
-	2:"wtyujjstyjsty",
-	3:"rtfsjtsutyu",
-	4:"srtysrusntyunghung                        ",
-	5:"arybrtsbyrtsby",
-	6:"svrtyvsrty",
-	7:"kdghjdghj",
-	8:"¶¶¶¶¶¶¶¶¶¶¶¶¶®®®®®®®®®®®®®®Æðđpoiiiiiiiiiiiiiiiiiiiijhmpatgio",
-	9:"adfgdfgadgaerht",
-	10:"styuktyudtmudy",
-	11:"dtnuyydtyundy",
-	12:"56s568tdmuydnudtu",
-	13:"s56snutytysbuy",
-	14:"tybutybtyu bstybustys",
-	15:"sbtybustystbyusbty",
-	16:"ujwstyuwtyuwtuetyuetyeuyuetyuetyuetyu",
-	17:"qqqqqqqqerytiujljjh",
-	18:"dfgadtaertertaertra",
-	19:"afiguahrptau8ertah"
-}
-
-var names_ = {
-	-1:"",0:"",1:"",2:"",3:"",4:"",5:"",6:"",7:"",8:"",9:"",10:"",11:"",12:"",13:"",14:"",15:" ",16:"",17:""
-}
 
 """
   tile addition checklist

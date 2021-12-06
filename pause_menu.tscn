@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://pause_menu.gd" type="Script" id=1]
+[ext_resource path="res://MenuButton.tscn" type="PackedScene" id=2]
 
 [node name="pause_menu" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -22,7 +23,7 @@ margin_left = -24.0
 margin_top = -7.8
 margin_right = 16.0
 margin_bottom = 6.2
-text = "PAUSED"
+text = "paused"
 align = 1
 valign = 1
 __meta__ = {
@@ -35,10 +36,10 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -32.0
-margin_top = -10.0
+margin_top = -12.0
 margin_right = 32.0
-margin_bottom = 10.0
-text = "Resume"
+margin_bottom = 8.0
+text = "resume"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,11 +51,13 @@ anchor_right = 0.5
 anchor_bottom = 0.507
 margin_left = -40.0
 margin_top = 7.79999
-margin_right = 43.0
+margin_right = 42.0
 margin_bottom = 27.8
-text = "Save Game"
+text = "save_game"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MenuButton" parent="." instance=ExtResource( 2 )]
 [connection signal="pressed" from="unpause" to="." method="_on_unpause_pressed"]
 [connection signal="pressed" from="save" to="." method="_on_save_pressed"]

@@ -22,14 +22,14 @@ func _ready():
 	noise.lacunarity = 2
 	bauxitenoise.seed = seed_+2
 	bauxitenoise.octaves = 5
-	bauxitenoise.period = 100
+	bauxitenoise.period = 500
 	bauxitenoise.persistence = 0.5
 	bauxitenoise.lacunarity = 2
 	beetnoise.seed = seed_+3
 	beetnoise.octaves = 3
-	beetnoise.period = 100
-	beetnoise.persistence = 0.8
-	beetnoise.lacunarity = 3
+	beetnoise.period = 500
+	beetnoise.persistence = 0.85
+	beetnoise.lacunarity = 5
 
 func generate(cx,cy):
 	#if $generated.get_cell(cx,cy) == -1: return
@@ -62,7 +62,7 @@ func generate(cx,cy):
 			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.1):
 				for i in range(-4, 5):
 					for j in range(-4, 5):
-						if abs(i)+abs(j)+randi()%5-2 < 3*(bauxitenoise.get_noise_2d(lx,ly)+0.2) and get_cell(lx+i,ly+j) == get_parent().ASDF:
+						if abs(i)+abs(j)+randi()%5-2 < 3*(bauxitenoise.get_noise_2d(lx,ly)-0.2) and get_cell(lx+i,ly+j) == get_parent().ASDF:
 							set_cell(lx+i,ly+j,get_parent().BAUXITE)
 				
 

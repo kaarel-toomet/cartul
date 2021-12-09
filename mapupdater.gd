@@ -17,6 +17,7 @@ func _ready():
 
 
 func update():
+	if p.paused: return
 	map = p.map
 	var playercx = p.chunk_size.x*floor(p.get_node("player").position.x / p.chunk_size.x / p.tile_size.x / p.scale.x)
 	var playercy = p.chunk_size.y*floor(p.get_node("player").position.y / p.chunk_size.y / p.tile_size.y / p.scale.y)

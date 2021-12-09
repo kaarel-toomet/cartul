@@ -4,7 +4,7 @@ extends KinematicBody2D
 
 var type = 0
 
-var speed = 3
+var speed = 6
 
 var mousein = false
 var health = 5.0

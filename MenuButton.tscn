@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://MenuButton.gd" type="Script" id=1]
+
+[node name="MenuButton" type="MenuButton"]
+margin_left = 385.0
+margin_top = 144.0
+margin_right = 442.0
+margin_bottom = 164.0
+text = "English"
+flat = false
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

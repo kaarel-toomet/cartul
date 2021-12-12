@@ -41,6 +41,7 @@ func generate(cx,cy):
 				cell = 6
 			#if get_cell(lx,ly) == -1:
 			set_cell(lx,ly,cell)
+			$psmell.set_cell(lx,ly,0)
 			#$generated.set_cell(x,y,0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

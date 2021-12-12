@@ -80,12 +80,13 @@ var names = {
 
 """
   tile addition checklist
-image
+image to assets folder
 add to tileset
 add to constants, breaktos and names here
 increase max_item_id here, in ui.gd and in slot.gd
 add texture to textures dict in ui.gd and slot.gd
 add to no_spawning_on in mobspawning.gd if needed
+add to block_smell in mapupdater.gd if needed
 add to languages (text.csv file)
 """
 

@@ -3,8 +3,8 @@ extends KinematicBody2D
 
 var paused = false
 
-var speed = 6
-var base_speed = 6
+var speed = 4
+var base_speed = 4
 var health = 30
 var attacked = 0
 #var scale = 2
@@ -71,11 +71,12 @@ func _process(delta):
 		health = 30
 	
 	get_parent().get_node("ui").get_node("Label").text = "X = " + str(position.x/get_parent().scale.x/get_parent().tile_size.x) + ", Y = " + str(position.y/get_parent().scale.y/get_parent().tile_size.y)
+	get_parent().get_node("ui").get_node("Label2").text = str(get_parent().map.get_node("psmell").get_cellv(map_pos))
 	get_parent().get_node("ui").get_node("box").get_node("healthlabel").text = str(health) + " / 30"
 	
 	if Input.is_action_pressed("shift"):
 		base_speed = 2
-	else: base_speed = 6
+	else: base_speed = 4
 	
 	if get_parent().map.get_cellv(map_pos) == get_parent().WATER:
 		speed = base_speed/2

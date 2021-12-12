@@ -96,3 +96,17 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label2" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -120.0
+margin_top = 80.0
+margin_right = 125.0
+margin_bottom = 96.0
+text = "sssssss"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -54,6 +54,7 @@ func generate(cx,cy):
 			
 			if get_cell(lx,ly) == -1:
 				set_cell(lx,ly,cell)
+			$psmell.set_cell(lx,ly,0)
 			#$generated.set_cell(x,y,0)
 	for x in range(chunk_size.x):
 		for y in range(chunk_size.y):

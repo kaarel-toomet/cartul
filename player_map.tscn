@@ -11,3 +11,5 @@ script = ExtResource( 1 )
 
 [node name="generated" type="TileMap" parent="."]
 format = 1
+
+[node name="psmell" type="Node" parent="."]

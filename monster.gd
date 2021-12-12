@@ -4,13 +4,14 @@ extends KinematicBody2D
 
 var type = 0
 
-var speed = 6
+var speed = 4
 
 var mousein = false
 var health = 5.0
 var main
 
-var map_pos
+var map_x
+var map_y
 
 func _ready():
 	main = get_parent().get_parent()
@@ -33,10 +34,12 @@ func _process(delta):
 		)
 		queue_free()
 	
-	map_pos = Vector2(floor(position.x/main.scale.x/main.tile_size.x),
-	floor(position.y/main.scale.y/main.tile_size.y))
+	map_x = floor(position.x/main.scale.x/main.tile_size.x)
+	map_y = floor(position.y/main.scale.y/main.tile_size.y)
 	
-	if main.map.get_cellv(map_pos) == main.ERROR:
+	
+	
+	if main.map.get_cell(map_x, map_y) == main.ERROR:
 		health -= 0.1
 
 

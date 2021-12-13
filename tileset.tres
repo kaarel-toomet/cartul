@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=29 format=2]
+[gd_resource type="TileSet" load_steps=30 format=2]
 
 [ext_resource path="res://assets/asdf.png" type="Texture" id=1]
 [ext_resource path="res://assets/sand.png" type="Texture" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://assets/mercury.png" type="Texture" id=18]
 [ext_resource path="res://assets/monsterpart.png" type="Texture" id=19]
 [ext_resource path="res://assets/error.png" type="Texture" id=20]
+[ext_resource path="res://assets/potato.png" type="Texture" id=21]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -383,3 +384,17 @@ resource_name = "tileset.tres"
 19/shape_one_way_margin = 0.0
 19/shapes = [  ]
 19/z_index = 0
+20/name = "potato.png 20"
+20/texture = ExtResource( 21 )
+20/tex_offset = Vector2( 0, 0 )
+20/modulate = Color( 1, 1, 1, 1 )
+20/region = Rect2( 0, 0, 16, 16 )
+20/tile_mode = 0
+20/occluder_offset = Vector2( 0, 0 )
+20/navigation_offset = Vector2( 0, 0 )
+20/shape_offset = Vector2( 0, 0 )
+20/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+20/shape_one_way = false
+20/shape_one_way_margin = 0.0
+20/shapes = [  ]
+20/z_index = 0

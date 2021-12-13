@@ -15,13 +15,14 @@ var mousein = false
 signal mouse_exit
 
 
-var main
+onready var main = get_parent().get_parent().get_parent()
 
 var slot_num = 4
 onready var slots = [$slot1, $slot2, $slot3, $slot4]
+
 func _ready():
 	
-	main = get_parent().get_parent().get_parent()
+	#main = get_parent().get_parent().get_parent()
 	
 	#self.connect("mouse_exit", get_parent(), "inventory_mouse_exited", [self])
 	for s in range(slot_num):
@@ -148,5 +149,6 @@ func _process(delta):
 	#print(slots)
 	if amounts[-1] == 0 and amounts[-2] == 0 and slot_num > 4: remove_slot()
 	if amounts[-1] != 0: add_slot()
+	get_parent().get_parent().get_node("Label2").text = get_parent().get_parent().get_parent().names[tiles[selected]]
 		
 		

@@ -12,7 +12,8 @@ func _ready():
 	
 	main = get_parent()
 	no_spawning_on = [main.ASDF,main.BOX,main.FRAME,main.BAUXITE,main.ALUMINIUM,main.BEETROOT,
-					  main.CRAFTER,main.ACTIVEFURNACE, main.INACTIVEFURNACE, main.MERCURY]
+					  main.CRAFTER,main.ACTIVEFURNACE, main.INACTIVEFURNACE, main.MERCURY,
+					  main.POTATO]
 
 
 

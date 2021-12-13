@@ -6,20 +6,8 @@ var id = 0
 var item = -1
 var amount = 0
 
-var max_item_id = 19
-
-
-
-var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
-				preload("res://assets/sand.png"), preload("res://assets/water.png"),
-				preload("res://assets/box.png"), preload("res://assets/frame.png"),
-				preload("res://assets/hole.png"), preload("res://assets/editor.png"),
-				preload("res://assets/stairs.png"), preload("res://assets/bauxite.png"),
-				preload("res://assets/aluminium.png"), preload("res://assets/beetroot.png"),
-				preload("res://assets/machine.png"),preload("res://assets/goldblock.png"),
-				preload("res://assets/furnace.png"), preload("res://assets/inactivefurnace.png"),
-				preload("res://assets/mercury.png"), preload("res://assets/palladium.png"),
-				preload("res://assets/monsterpart.png"), preload("res://assets/error.png"), null]
+onready var textures = get_parent().get_parent().get_parent().textures
+onready var max_item_id = get_parent().get_parent().get_parent().max_item_id
 
 
 

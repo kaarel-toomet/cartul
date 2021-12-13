@@ -29,7 +29,7 @@ func _ready():
 	p = get_parent()
 	map = p.map
 	block_smell = [p.ASDF, p.BOX, p.BAUXITE, p.ALUMINIUM, p.BEETROOT, p.CRAFTER, p.ACTIVEFURNACE, p.INACTIVEFURNACE,
-				   p.MERCURY, p.PALLADIUM]
+				   p.MERCURY, p.PALLADIUM, p.POTATO]
 
 
 func update():

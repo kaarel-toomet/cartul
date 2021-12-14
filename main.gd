@@ -77,7 +77,8 @@ var names = {
 	16:"tile_mercury",
 	17:"tile_palladium",
 	18:"tile_monster_part",
-	19:"tile_error"
+	19:"tile_error",
+	20:"tile_potato"
 }
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),

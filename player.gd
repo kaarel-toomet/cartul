@@ -75,7 +75,7 @@ func _process(delta):
 	get_parent().get_node("ui").get_node("box").get_node("healthlabel").text = str(health) + " / 30"
 	
 	if Input.is_action_pressed("shift"):
-		base_speed = 1
+		base_speed = 14
 	else: base_speed = 2
 	
 	if get_parent().map.get_cellv(map_pos) == get_parent().WATER:

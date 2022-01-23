@@ -22,7 +22,25 @@ var player_smell_decay = 0.85
 
 var block_smell
 
-var r = 2
+var smell_r = 2
+var tiles_r = 2
+
+const D = Vector2(0,1)
+const DL = Vector2(-1,1)
+const L = Vector2(-1,0)
+const UL = Vector2(-1,-1)
+const U = Vector2(0,-1)
+const UR = Vector2(1,-1)
+const R = Vector2(1,0)
+const DR = Vector2(1,1)
+
+
+
+const dirs_neumann = [D,L,U,R]            # 4 adjacent neighbors
+const dirs_moore = [D,DL,L,UL,U,UR,R,DR]  # 8 neighbors
+
+var dirs = dirs_neumann
+onready var num_dirs = len(dirs)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,7 +50,7 @@ func _ready():
 				   p.MERCURY, p.PALLADIUM]
 
 
-func update():
+func update_smell():
 	if p.paused: return
 	map = p.map
 	psmell = map.get_node("psmell")
@@ -45,73 +63,57 @@ func update():
 	#print(psmell.get_cell(px,py))
 	psmell.set_cell(px,py,psmell.get_cell(px,py) + 1000)
 	#dir = tick%4
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
+	#if p.map_id != 2:
+	
+	
+	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
+		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
+			buffer.set_cell(x,y, 0)
 			#dir = posmod(dir+1, 4)
-			if randf() < player_smell_diffusion and !block_smell.has(map.get_cell(x,y)):
+			dir = randi()%4
+			if randf() < player_smell_diffusion and !block_smell.has(map.get_cell(x,y)) and !block_smell.has(map.get_cellv(Vector2(x,y) + dirs[dir])):
 				#dir = posmod(dir+1, 4)
-				dir = randi()%4
-#				var num_st = 1
-#				num_st += int(!block_smell.has(map.get_cell(x+1,y)))
-#				num_st += int(!block_smell.has(map.get_cell(x,y+1)))
-#				num_st += int(!block_smell.has(map.get_cell(x-1,y)))
-#				num_st += int(!block_smell.has(map.get_cell(x,y-1)))
-				
-	#			#else:
-	#			buffer.set_cell(x,y,psmell.get_cell(x,y) * (1-num_st * player_smell_diffusion) * player_smell_decay +
-	#				psmell.get_cell(x+1,y)*player_smell_diffusion*int(!block_smell.has(map.get_cell(x+1,y))) +
-	#				psmell.get_cell(x,y+1)*player_smell_diffusion*int(!block_smell.has(map.get_cell(x,y+1))) +
-	#				psmell.get_cell(x-1,y)*player_smell_diffusion*int(!block_smell.has(map.get_cell(x-1,y))) +
-	#				psmell.get_cell(x,y-1)*player_smell_diffusion*int(!block_smell.has(map.get_cell(x,y-1))))
-				
-				
-				
-				#var num_st = 1
-				#num_st += int(!block_smell.has(md))
-				#num_st += int(!block_smell.has(ml))
-				#num_st += int(!block_smell.has(mu))
-				#num_st += int(!block_smell.has(mr))
-				var val
-				
-				if dir == 0 and !block_smell.has(map.get_cell(x,y+1)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x,y+1))/2
-				elif dir == 1 and !block_smell.has(map.get_cell(x-1,y)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x-1,y))/2
-				elif dir == 2 and !block_smell.has(map.get_cell(x,y-1)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x,y-1))/2
-				elif dir == 3 and !block_smell.has(map.get_cell(x+1,y)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x+1,y))/2
-				else:
-					val = psmell.get_cell(x,y)
+				var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y) + dirs[dir]) )/2
 				val *= player_smell_decay
-				#var val = (d+l+u+r+c)/num_st * player_smell_decay
 			
 				buffer.set_cell(x,y, val)
-			
-			
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
+	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
+		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
 			psmell.set_cell(x,y,buffer.get_cell(x,y))
+			#buffer.set_cell(x,y,map.get_cell(x,y))
+			
+
+
+func update_tiles():
+	if p.paused: return
+	map = p.map
+	psmell = map.get_node("psmell")
+	buffer = map.get_node("buffer")
+	var playercx = p.chunk_size.x*floor(p.get_node("player").position.x / p.chunk_size.x / p.tile_size.x / p.scale.x)
+	var playercy = p.chunk_size.y*floor(p.get_node("player").position.y / p.chunk_size.y / p.tile_size.y / p.scale.y)
+	px = floor(p.get_node("player").position.x / p.tile_size.x / p.scale.x)
+	py = floor(p.get_node("player").position.y / p.tile_size.y / p.scale.y)
+	
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
+			##psmell.set_cell(x,y,buffer.get_cell(x,y))
 			buffer.set_cell(x,y,map.get_cell(x,y))
 			
 			
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
+			#buffer.set_cell(x,y,map.get_cell(x,y))
 			
-			if map.get_cell(x,y) == p.BEETROOT:
+			var c = Vector2(x,y)
+			var cell = map.get_cellv(c)
+			
+			if cell == p.BEETROOT:
 				#print(x," ",y)
-				if map.get_cell(x+1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x+1,y,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x-1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x-1,y,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y+1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x,y+1,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y-1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x,y-1,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
+				for dir in dirs:
+					if map.get_cellv(c+dir) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
+						buffer.set_cellv(c+dir,y,p.ALUMINIUM)
+						buffer.set_cellv(c,p.breakto[p.BEETROOT])
+						break
 					
 			elif map.get_cell(x,y) == p.INACTIVEFURNACE:
 				if map.get_cell(x+1,y) == p.BEETROOT:
@@ -202,16 +204,18 @@ func update():
 				#print(dirs)
 					
 					
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
 			map.set_cell(x,y,buffer.get_cell(x,y))
-			buffer.set_cell(x,y,-1)
+			#buffer.set_cell(x,y,-1)
 	
 
 
 func _process(delta):
 	update_timer -= delta
 	if update_timer <= 0:
-		update()
+		if p.map_id != 2:
+			update_tiles()
+		update_smell()
 		update_timer = 0.1
 		tick += 1

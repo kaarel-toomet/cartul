@@ -117,11 +117,6 @@ shift={
  ]
 }
 
-[locale]
-
-translations=PoolStringArray( "res://assets/text.csv", "res://assets/text.en_CA.translation", "res://assets/text.et.translation", "res://assets/text.en_AU.translation", "res://assets/text.en_US.translation" )
-locale_filter=[ 0, [  ] ]
-
 [rendering]
 
 environment/default_environment="res://default_env.tres"

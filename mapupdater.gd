@@ -21,15 +21,29 @@ var aluminium_beet_smelting_chance = 0.05
 #var furnace_deactivation_chance = 0.5
 var player_smell_diffusion = 0.5
 var player_smell_decay = 0.85
+var error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
 
 var block_smell
 
-var r = 3
+var smell_r = 2
+var tiles_r = 2
 
-var thread
-var thread_should_exit = false
-var semaphore
-#var mutex
+const D = Vector2(0,1)
+const DL = Vector2(-1,1)
+const L = Vector2(-1,0)
+const UL = Vector2(-1,-1)
+const U = Vector2(0,-1)
+const UR = Vector2(1,-1)
+const R = Vector2(1,0)
+const DR = Vector2(1,1)
+
+
+
+const dirs_neumann = [D,L,U,R]            # 4 adjacent neighbors
+const dirs_moore = [D,DL,L,UL,U,UR,R,DR]  # 8 neighbors
+
+var dirs = dirs_neumann
+onready var num_dirs = len(dirs)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,7 +59,9 @@ func _ready():
 
 
 func update_smell():
-	#semaphore.wait()
+	
+	if p.paused: return
+	
 	var playercx
 	var playercy
 	
@@ -68,45 +84,28 @@ func update_smell():
 	#print(psmell.get_cell(px,py))
 	psmell.set_cell(px,py,psmell.get_cell(px,py) + 1000)
 	#dir = tick%4
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
+	#if p.map_id != 2:
+	
+	
+	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
+		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
+			buffer.set_cell(x,y, 0)
 			#dir = posmod(dir+1, 4)
-			#mutex.lock()
-			if randf() < player_smell_diffusion and !block_smell.has(map.get_cell(x,y)):
+			dir = randi()%4
+			if randf() < player_smell_diffusion and !block_smell.has(map.get_cell(x,y)) and !block_smell.has(map.get_cellv(Vector2(x,y) + dirs[dir])):
 				#dir = posmod(dir+1, 4)
-				
-				dir = randi()%4
-				
-				var val
-				if dir == 0 and !block_smell.has(map.get_cell(x,y+1)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x,y+1))/2
-				elif dir == 1 and !block_smell.has(map.get_cell(x-1,y)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x-1,y))/2
-				elif dir == 2 and !block_smell.has(map.get_cell(x,y-1)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x,y-1))/2
-				elif dir == 3 and !block_smell.has(map.get_cell(x+1,y)):
-					val = (psmell.get_cell(x,y) + psmell.get_cell(x+1,y))/2
-				else:
-					val = psmell.get_cell(x,y)
+				var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y) + dirs[dir]) )/2
 				val *= player_smell_decay
-				#var val = (d+l+u+r+c)/num_st * player_smell_decay
-
-				buffer2.set_cell(x,y, val)
-				
-			#mutex.unlock()
 			
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
-			#mutex.lock()
-			psmell.set_cell(x,y,buffer2.get_cell(x,y))
-			#mutex.unlock()
+				buffer.set_cell(x,y, val)
+	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
+		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
+			psmell.set_cell(x,y,buffer.get_cell(x,y))
 			#buffer.set_cell(x,y,map.get_cell(x,y))
-
-
+			
 
 
 func update_tiles():
-	
 	if p.paused: return
 	map = p.map
 	psmell = map.get_node("psmell")
@@ -117,33 +116,26 @@ func update_tiles():
 	px = floor(p.get_node("player").position.x / p.tile_size.x / p.scale.x)
 	py = floor(p.get_node("player").position.y / p.tile_size.y / p.scale.y)
 	
-	#print(psmell.get_cell(px,py))
-	#psmell.set_cell(px,py,psmell.get_cell(px,py) + 1000)
-	#dir = tick%4
-	
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
-			#mutex.lock()
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
+			##psmell.set_cell(x,y,buffer.get_cell(x,y))
 			buffer.set_cell(x,y,map.get_cell(x,y))
-			#mutex.unlock()
-	
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
-			#mutex.lock()
-			if map.get_cell(x,y) == p.BEETROOT:
+			
+			
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
+			#buffer.set_cell(x,y,map.get_cell(x,y))
+			
+			var c = Vector2(x,y)
+			var cell = map.get_cellv(c)
+			
+			if cell == p.BEETROOT:
 				#print(x," ",y)
-				if map.get_cell(x+1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x+1,y,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x-1,y) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x-1,y,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y+1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x,y+1,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
-				elif map.get_cell(x,y-1) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
-					buffer.set_cell(x,y-1,p.ALUMINIUM)
-					buffer.set_cell(x,y,p.breakto[p.BEETROOT])
+				for dir in dirs:
+					if map.get_cellv(c+dir) == p.BAUXITE and randf() < aluminium_beet_smelting_chance:
+						buffer.set_cellv(c+dir,y,p.ALUMINIUM)
+						buffer.set_cellv(c,p.breakto[p.BEETROOT])
+						break
 					
 			elif map.get_cell(x,y) == p.INACTIVEFURNACE:
 				if map.get_cell(x+1,y) == p.BEETROOT:
@@ -206,41 +198,38 @@ func update_tiles():
 				var sl = psmell.get_cell(x-1,y)
 				var su = psmell.get_cell(x,y-1)
 				var sr = psmell.get_cell(x+1,y)
-				var m = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
+				
 				#var n = 4
 				
-				var dirs = []
-				if sd >= sl and sd >= su and sd >= sr: dirs.append(0)
-				if sl >= sd and sl >= su and sl >= sr: dirs.append(1)
-				if su >= sd and su >= sl and su >= sr: dirs.append(2)
-				if sr >= sd and sr >= sl and sr >= su: dirs.append(3)
+				var cdirs = []
+				if sd >= sl and sd >= su and sd >= sr: cdirs.append(0)
+				if sl >= sd and sl >= su and sl >= sr: cdirs.append(1)
+				if su >= sd and su >= sl and su >= sr: cdirs.append(2)
+				if sr >= sd and sr >= sl and sr >= su: cdirs.append(3)
 				dir = dirs[randi()%len(dirs)]
 				
-				if dir == 0 and m.has(d) and buffer.get_cell(x,y+1) != p.ERROR:
+				if dir == 0 and error_movable.has(d) and buffer.get_cell(x,y+1) != p.ERROR:
 					#print("d", d)
 					buffer.set_cell(x,y,d)
 					buffer.set_cell(x,y+1,p.ERROR)
-				elif dir == 1 and m.has(l) and buffer.get_cell(x-1,y) != p.ERROR:
+				elif dir == 1 and error_movable.has(l) and buffer.get_cell(x-1,y) != p.ERROR:
 					#print("l", l)
 					buffer.set_cell(x,y,l)
 					buffer.set_cell(x-1,y,p.ERROR)
-				elif dir == 2 and m.has(u) and buffer.get_cell(x,y-1) != p.ERROR:
+				elif dir == 2 and error_movable.has(u) and buffer.get_cell(x,y-1) != p.ERROR:
 					#print("u", u)
 					buffer.set_cell(x,y,u)
 					buffer.set_cell(x,y-1,p.ERROR)
-				elif dir == 3 and m.has(r) and buffer.get_cell(x+1,y) != p.ERROR:
+				elif dir == 3 and error_movable.has(r) and buffer.get_cell(x+1,y) != p.ERROR:
 					#print("r", r)
 					buffer.set_cell(x,y,r)
 					buffer.set_cell(x+1,y,p.ERROR)
 				#print(dirs)
 				
-			#mutex.unlock()
 					
-	for x in range(playercx-p.chunk_size.x*r,playercx+p.chunk_size.x*(r+1)):
-		for y in range(playercy-p.chunk_size.y*r,playercy+p.chunk_size.y*(r+1)):
-			#mutex.lock()
+	for x in range(playercx - p.chunk_size.x*tiles_r,  playercx + p.chunk_size.x*(tiles_r) + 1):
+		for y in range(playercy - p.chunk_size.y*tiles_r,  playercy + p.chunk_size.y*(tiles_r) + 1):
 			map.set_cell(x,y,buffer.get_cell(x,y))
-			#mutex.lock()
 			#buffer.set_cell(x,y,-1)
 	
 
@@ -250,12 +239,10 @@ func _process(delta):
 	
 	update_timer -= delta
 	if update_timer <= 0:
-		
-		update_tiles()
+		if p.map_id != 2:
+			update_tiles()
 		update_smell()
-		#sthread.wait_to_finish()
-		#semaphore.post()
-		#update_timer = 0.1
+		update_timer = 0.1
 		tick += 1
 		
 

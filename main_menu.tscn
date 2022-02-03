@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://main_menu.gd" type="Script" id=1]
-[ext_resource path="res://MenuButton.tscn" type="PackedScene" id=2]
 
 [node name="main_menu" type="Control"]
 anchor_right = 1.0
@@ -34,10 +33,8 @@ margin_left = -92.0
 margin_top = -18.0
 margin_right = 92.0
 margin_bottom = 18.0
-text = "play"
+text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="MenuButton" parent="." instance=ExtResource( 2 )]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

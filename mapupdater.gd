@@ -19,9 +19,9 @@ var update_timer = 1
 
 var aluminium_beet_smelting_chance = 0.05
 #var furnace_deactivation_chance = 0.5
-var player_smell_diffusion = 0.5
+var player_smell_diffusion = 1
 var player_smell_decay = 0.85
-var error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
+var error_movable = []# = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
 
 var block_smell
 
@@ -44,10 +44,16 @@ const dirs_moore = [D,DL,L,UL,U,UR,R,DR]  # 8 neighbors
 
 var dirs = dirs_neumann
 onready var num_dirs = len(dirs)
+var dir_dict = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	p = get_parent() # main node
+	
+	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
+	
+	for dir in range(num_dirs):
+		dir_dict.append(0)
 	
 	#thread = Thread.new()
 	#semaphore = Semaphore.new()
@@ -138,29 +144,18 @@ func update_tiles():
 						break
 					
 			elif map.get_cell(x,y) == p.INACTIVEFURNACE:
-				if map.get_cell(x+1,y) == p.BEETROOT:
-					buffer.set_cell(x+1,y,p.breakto[p.BEETROOT])
-					buffer.set_cell(x,y,p.ACTIVEFURNACE)
-				elif map.get_cell(x-1,y) == p.BEETROOT:
-					buffer.set_cell(x-1,y,p.breakto[p.BEETROOT])
-					buffer.set_cell(x,y,p.ACTIVEFURNACE)
-				elif map.get_cell(x,y+1) == p.BEETROOT:
-					buffer.set_cell(x,y+1,p.breakto[p.BEETROOT])
-					buffer.set_cell(x,y,p.ACTIVEFURNACE)
-				elif map.get_cell(x,y-1) == p.BEETROOT:
-					buffer.set_cell(x,y-1,p.breakto[p.BEETROOT])
-					buffer.set_cell(x,y,p.ACTIVEFURNACE)
+				for dir in dirs:
+					if map.get_cellv(c+dir) == p.BEETROOT:
+						buffer.set_cellv(c+dir,y,p.breakto[p.BEETROOT])
+						buffer.set_cellv(c,p.ACTIVEFURNACE)
+						break
 			
 			elif map.get_cell(x,y) == p.ACTIVEFURNACE:
-				if map.get_cell(x+1,y) == p.BAUXITE:
-					buffer.set_cell(x+1,y,p.ALUMINIUM)
-				if map.get_cell(x-1,y) == p.BAUXITE:
-					buffer.set_cell(x-1,y,p.ALUMINIUM)
-				if map.get_cell(x,y+1) == p.BAUXITE:
-					buffer.set_cell(x,y+1,p.ALUMINIUM)
-				if map.get_cell(x,y-1) == p.BAUXITE:
-					buffer.set_cell(x,y-1,p.ALUMINIUM)
-				buffer.set_cell(x,y,p.INACTIVEFURNACE)
+				for dir in dirs:
+					if map.get_cellv(c+dir) == p.BAUXITE:
+						buffer.set_cellv(c+dir,y,p.ALUMINIUM)
+						buffer.set_cellv(c,p.INACTIVEFURNACE)
+						break
 			
 			elif map.get_cell(x,y) == p.CRAFTER:
 				var d = map.get_cell(x,y+1)
@@ -190,40 +185,64 @@ func update_tiles():
 					
 			elif map.get_cell(x,y) == p.ERROR:
 				#mutex.lock()
-				var d = map.get_cell(x,y+1)
-				var l = map.get_cell(x-1,y)
-				var u = map.get_cell(x,y-1)
-				var r = map.get_cell(x+1,y)
-				var sd = psmell.get_cell(x,y+1)
-				var sl = psmell.get_cell(x-1,y)
-				var su = psmell.get_cell(x,y-1)
-				var sr = psmell.get_cell(x+1,y)
-				
-				#var n = 4
+#				var d = map.get_cell(x,y+1)
+#				var l = map.get_cell(x-1,y)
+#				var u = map.get_cell(x,y-1)
+#				var r = map.get_cell(x+1,y)
+#				var sd = psmell.get_cell(x,y+1)
+#				var sl = psmell.get_cell(x-1,y)
+#				var su = psmell.get_cell(x,y-1)
+#				var sr = psmell.get_cell(x+1,y)
+#
+#				#var n = 4
+#
+#				
+#				if sd >= sl and sd >= su and sd >= sr: cdirs.append(0)
+#				if sl >= sd and sl >= su and sl >= sr: cdirs.append(1)
+#				if su >= sd and su >= sl and su >= sr: cdirs.append(2)
+#				if sr >= sd and sr >= sl and sr >= su: cdirs.append(3)
 				
 				var cdirs = []
-				if sd >= sl and sd >= su and sd >= sr: cdirs.append(0)
-				if sl >= sd and sl >= su and sl >= sr: cdirs.append(1)
-				if su >= sd and su >= sl and su >= sr: cdirs.append(2)
-				if sr >= sd and sr >= sl and sr >= su: cdirs.append(3)
-				dir = dirs[randi()%len(dirs)]
+				var nsmells = dir_dict.duplicate(true)
 				
-				if dir == 0 and error_movable.has(d) and buffer.get_cell(x,y+1) != p.ERROR:
-					#print("d", d)
-					buffer.set_cell(x,y,d)
-					buffer.set_cell(x,y+1,p.ERROR)
-				elif dir == 1 and error_movable.has(l) and buffer.get_cell(x-1,y) != p.ERROR:
-					#print("l", l)
-					buffer.set_cell(x,y,l)
-					buffer.set_cell(x-1,y,p.ERROR)
-				elif dir == 2 and error_movable.has(u) and buffer.get_cell(x,y-1) != p.ERROR:
-					#print("u", u)
-					buffer.set_cell(x,y,u)
-					buffer.set_cell(x,y-1,p.ERROR)
-				elif dir == 3 and error_movable.has(r) and buffer.get_cell(x+1,y) != p.ERROR:
-					#print("r", r)
-					buffer.set_cell(x,y,r)
-					buffer.set_cell(x+1,y,p.ERROR)
+				
+				for dir in dirs:
+					var tile = map.get_cellv(c+dir)
+					if error_movable.has(tile) and buffer.get_cellv(c+dir) == tile:
+						cdirs.append(dirs.find(dir))
+						var smell = psmell.get_cellv(c+dir)
+						nsmells[dirs.find(dir)] = smell
+						
+				var maxsmell = nsmells.max()
+				 
+				for cdir in cdirs:
+					if nsmells[cdir] != maxsmell:
+						cdirs.remove(cdir)
+				
+				
+				if len(cdirs) != 0:
+					dir = dirs[cdirs[randi()%len(cdirs)]]
+					buffer.set_cellv(c, map.get_cellv(c+dir))
+					buffer.set_cellv(c+dir, p.ERROR)
+				
+				
+				
+#				if dir == 0 and error_movable.has(d) and buffer.get_cell(x,y+1) != p.ERROR:
+#					#print("d", d)
+#					buffer.set_cell(x,y,d)
+#					buffer.set_cell(x,y+1,p.ERROR)
+#				elif dir == 1 and error_movable.has(l) and buffer.get_cell(x-1,y) != p.ERROR:
+#					#print("l", l)
+#					buffer.set_cell(x,y,l)
+#					buffer.set_cell(x-1,y,p.ERROR)
+#				elif dir == 2 and error_movable.has(u) and buffer.get_cell(x,y-1) != p.ERROR:
+#					#print("u", u)
+#					buffer.set_cell(x,y,u)
+#					buffer.set_cell(x,y-1,p.ERROR)
+#				elif dir == 3 and error_movable.has(r) and buffer.get_cell(x+1,y) != p.ERROR:
+#					#print("r", r)
+#					buffer.set_cell(x,y,r)
+#					buffer.set_cell(x+1,y,p.ERROR)
 				#print(dirs)
 				
 					

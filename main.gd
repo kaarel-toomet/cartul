@@ -244,7 +244,7 @@ func _process(delta):
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
-		$ui/ScrollContainer/hotbar.get_item(ROTATOR_CCW,5)
+		#$ui/ScrollContainer/hotbar.get_item(ROTATOR_CCW,5)
 		if $ui/ScrollContainer/hotbar.get_item(map.get_cell(mx,my), 1):
 			#print("sssssssssssssssssss")
 			

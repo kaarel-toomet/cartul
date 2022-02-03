@@ -14,10 +14,13 @@ script = ExtResource( 2 )
 format = 1
 
 [node name="psmell" type="TileMap" parent="."]
-position = Vector2( -1, -2 )
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="buffer" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+format = 1
+
+[node name="buffer2" type="TileMap" parent="."]
 format = 1

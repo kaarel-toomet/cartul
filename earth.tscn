@@ -20,3 +20,6 @@ format = 1
 
 [node name="buffer" type="TileMap" parent="."]
 format = 1
+
+[node name="buffer2" type="TileMap" parent="."]
+format = 1

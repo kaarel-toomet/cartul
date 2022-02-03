@@ -15,15 +15,15 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 20
+var max_item_id = 22
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
 					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1,
-					  19:-1, 20:-1}
+					  19:-1, 20:-1, 21:-1, 22:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
 					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5, 18:5,
-					  19:5, 20:5}
+					  19:5, 20:5, 21:5, 22:5}
 var breakto = normal_breakto
 
 
@@ -55,6 +55,8 @@ const PALLADIUM = 17
 const MONSTERPART = 18
 const ERROR = 19
 const POTATO = 20
+const ROTATOR_CCW = 21
+const ROTATOR_CW = 22
 
 var names = {
 	-1:"tile_none",
@@ -78,7 +80,9 @@ var names = {
 	17:"tile_palladium",
 	18:"tile_monster_part",
 	19:"tile_error",
-	20:"tile_potato"
+	20:"tile_potato",
+	21:"tile_rotator_cw",
+	22:"tile_rotator_ccw"
 }
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
@@ -91,7 +95,8 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/furnace.png"), preload("res://assets/inactivefurnace.png"),
 				preload("res://assets/mercury.png"), preload("res://assets/palladium.png"),
 				preload("res://assets/monsterpart.png"), preload("res://assets/error.png"),
-				preload("res://assets/potato.png"), null]
+				preload("res://assets/potato.png"), preload("res://assets/rotator_ccw.png"),
+				preload("res://assets/rotator_cw.png"), null]
 
 """
   tile addition checklist
@@ -99,6 +104,7 @@ image to assets folder
 add to tileset
 add to constants, breaktos and names here
 add texture to textures dict here
+increase max_item_id here
 add to languages (text.csv file)
 if needed:
 add to no_spawning_on in mobspawning.gd
@@ -211,8 +217,10 @@ func _ready():
 	add_child(hullmyts)
 	
 	load_world()
+	
 	seed(seed_)
 	map.fix_invalid_tiles()
+	
 
 
 
@@ -236,6 +244,7 @@ func _process(delta):
 		#print("b")
 		#print($ui/hotbar.tiles,", ",$ui/hotbar.amounts)
 		#if map.get_cell(mx,my) == -1: return
+		$ui/ScrollContainer/hotbar.get_item(ROTATOR_CCW,5)
 		if $ui/ScrollContainer/hotbar.get_item(map.get_cell(mx,my), 1):
 			#print("sssssssssssssssssss")
 			

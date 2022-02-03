@@ -64,7 +64,7 @@ func get_item(item, amount):
 			set_item(s, item, min(n, stack_limit))
 			n -= min(n, stack_limit)
 		if n <= 0: return true
-	print("something went wrong in get_item")
+	print("Error in get_item")
 	return false
 
 func can_lose(item, amount):

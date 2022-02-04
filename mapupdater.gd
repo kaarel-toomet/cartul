@@ -165,21 +165,27 @@ func update_tiles():
 				var u = map.get_cell(x,y-1)
 				var r = map.get_cell(x+1,y)
 				
-				if d == p.NONE and l == p.ALUMINIUM and u == p.ALUMINIUM and r == p.ALUMINIUM:
+				if d == p.breakto[p.FRAME] and l == p.ALUMINIUM and u == p.ALUMINIUM and r == p.ALUMINIUM:
 					buffer.set_cell(x,y+1,p.FRAME)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.NONE and l == p.ALUMINIUM and u == p.BEETROOT and r == p.HOLE:
+				elif d == p.breakto[p.EDITOR] and l == p.ALUMINIUM and u == p.BEETROOT and r == p.HOLE:
 					buffer.set_cell(x,y+1,p.EDITOR)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.NONE and l == p.ALUMINIUM and u == p.ASDF and r == p.ASDF:
+				elif d == p.breakto[p.INACTIVEFURNACE] and l == p.ALUMINIUM and u == p.ASDF and r == p.ASDF:
 					buffer.set_cell(x,y+1,p.INACTIVEFURNACE)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.ROTATOR_CCW] and l == p.ALUMINIUM and u == p.POTATO and r == p.ALUMINIUM:
+					buffer.set_cell(x,y+1,p.ROTATOR_CCW)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
+				
 			
 			elif randf() < 0.00001 and cell == p.NONE and p.map_id != 2:
 				buffer.set_cell(x,y,p.ERROR)

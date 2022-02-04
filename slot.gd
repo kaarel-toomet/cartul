@@ -26,7 +26,7 @@ func set_item(new_item, new_amount):
 	amount = new_amount
 
 
-func _process(delta):
+func _process(_delta):
 	if item == 65535: set_item(-1, 0)
 	if item == -1: set_item(-1,0)
 	if amount == 0: set_item(-1,0)

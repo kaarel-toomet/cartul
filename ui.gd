@@ -30,7 +30,7 @@ func _ready():
 
 
 
-func _process(delta):
+func _process(_delta):
 	#if Input.is_action_just_pressed("down"): #print("asdsds")
 	#if paused: return
 	if held == -1 or held_amount == 0: $held_item/held_amount.text = " "

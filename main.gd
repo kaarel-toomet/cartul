@@ -227,7 +227,7 @@ func _ready():
 
 
 
-func _process(delta):
+func _process(_delta):
 	if paused: return
 	if Input.is_action_just_pressed("pause"):
 		pause()
@@ -445,7 +445,7 @@ func load_world():
 			$mobs.add_child(mob)
 			monster_num += 1
 			
-			mobs.get_64()
+			mobs.get_64()  # some free space
 			mobs.get_64()
 			mobs.get_64()
 			mobs.get_64()

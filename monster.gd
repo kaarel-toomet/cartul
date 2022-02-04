@@ -18,7 +18,7 @@ func _ready():
 
 
 
-func _process(delta):
+func _process(_delta):
 	if get_parent().get_parent().paused: return
 	var ppos = get_parent().get_parent().get_node("player").position
 	move_and_slide((ppos - position).normalized()*speed*60)

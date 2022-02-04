@@ -18,7 +18,7 @@ func _ready():
 
 
 
-func _process(delta):
+func _process(_delta):
 	if main.paused: return
 	if main.map_id == 2: return
 	if main.monster_num >= main.monster_max: return

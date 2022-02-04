@@ -12,7 +12,7 @@ var max_item_id = 734253647694808
 
 var mousein = false
 
-signal mouse_exit
+#signal mouse_exit
 
 
 onready var main = get_parent().get_parent().get_parent()
@@ -123,13 +123,20 @@ func remove_slot():
 	#print(slots)
 	
 
-func _process(delta):
+func _process(_delta):  #. or E by default
 	if Input.is_action_just_pressed("craft"):
 		#print(tiles[0], " ",amounts[0],"   ",slots[0].item," ",slots[0].amount)
 		if tiles[selected] == main.ALUMINIUM and can_lose(main.ALUMINIUM,5) and can_lose(main.ASDF,2): # aluminiunm → crafter
 			lose_item(main.ASDF,2)
 			lose_item(main.ALUMINIUM,5)
 			get_item(main.CRAFTER,1)
+		
+		if tiles[selected] == main.ROTATOR_CCW: # flip rotator
+			lose_item(main.ROTATOR_CCW,5)
+			get_item(main.ROTATOR_CW,1)
+		if tiles[selected] == main.ROTATOR_CW: # flip rotator
+			lose_item(main.ROTATOR_CW,5)
+			get_item(main.ROTATOR_CCW,1)
 		#elif tiles[selected] == 5: # frame → editor
 		#	lose_item(main.FRAME,1)
 		#	get_item(main.EDITOR,1)

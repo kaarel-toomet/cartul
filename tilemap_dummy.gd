@@ -15,16 +15,16 @@ extends Node
 #func _process(delta):
 #	pass
 
-func set_cell(x, y, cell):
+func set_cell(_x, _y, _cell):
 	pass
 	
-func get_cell(x, y):
+func get_cell(_x, _y):
 	return -1
 
-func set_cellv(pos, cell):
+func set_cellv(_pos, _cell):
 	pass
 	
-func get_cellv(pos):
+func get_cellv(_pos):
 	return -1
 
 

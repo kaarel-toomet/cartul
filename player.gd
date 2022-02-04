@@ -20,7 +20,7 @@ var map_pos
 func _ready():
 	pass#speed *= scale.x
 
-func _process(delta):
+func _process(_delta):
 	if paused: return
 	var cx = floor(position.x/(get_parent().tile_size.x*get_parent().chunk_size.x*get_parent().scale.x))
 	var cy = floor(position.y/(get_parent().tile_size.y*get_parent().chunk_size.y*get_parent().scale.y))

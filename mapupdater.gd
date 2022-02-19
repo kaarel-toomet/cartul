@@ -174,7 +174,7 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.breakto[p.EDITOR] and l == p.ALUMINIUM and u == p.BEETROOT and r == p.HOLE:
+				elif d == p.breakto[p.EDITOR] and l == p.FRAME and u == p.ROTATOR_CCW and r == p.HOLE:
 					buffer.set_cell(x,y+1,p.EDITOR)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
@@ -194,7 +194,7 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.breakto[p.STOVE] and l == p.MONSTER_BRICK and u == p.MONSTER_BRICK and r == p.FURNACE:
+				elif d == p.breakto[p.STOVE] and l == p.MONSTER_BRICK and u == p.MONSTER_BRICK and r == p.INACTIVE_FURNACE:
 					buffer.set_cell(x,y+1,p.STOVE)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])

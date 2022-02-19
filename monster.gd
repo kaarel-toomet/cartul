@@ -29,9 +29,8 @@ func _process(_delta):
 	if health <= 0:
 		#print("dddddd")
 		main.monster_num -= 1
-		main.get_node("ui").get_node("ScrollContainer").get_node("hotbar").get_item(
-			main.MONSTER_PART, 1
-		)
+		main.get_node("ui").get_node("ScrollContainer").get_node("hotbar").get_item(main.MONSTER_PART, 1)
+		main.mouse_on_monster = false
 		queue_free()
 	
 	map_x = floor(position.x/main.scale.x/main.tile_size.x)

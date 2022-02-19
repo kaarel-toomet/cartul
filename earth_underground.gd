@@ -60,10 +60,10 @@ func generate(cx,cy):
 			if bauxitenoiseval - beetnoiseval + rand_range(-1,1) > 1.2:
 				cell = get_parent().POTATO
 			
-			if beetnoiseval - bauxitenoiseval - noiseval + rand_range(-2,2) > 3.5:
+			if beetnoiseval - bauxitenoiseval - noiseval + rand_range(-2,2) > 3.25:
 				cell = get_parent().PALLADIUM
 			
-			if beetnoiseval + bauxitenoiseval + widthnoiseval + rand_range(-2,2) > 3.5:
+			if beetnoiseval + bauxitenoiseval + widthnoiseval + rand_range(-2,2) > 3.25:
 				cell = get_parent().MERCURY
 			
 			if randf() < 0.0001:

@@ -159,8 +159,8 @@ func update_tiles():
 						buffer.set_cellv(c, p.INACTIVE_FURNACE)
 						break
 					if map.get_cellv(c+dir) == p.RAW_MONSTER_BRICK:
-						buffer.set_cellv(c+dir, p.ALUMINIUM)
-						buffer.set_cellv(c, p.MONSTER_BRICK)
+						buffer.set_cellv(c+dir, p.MONSTER_BRICK)
+						buffer.set_cellv(c, p.INACTIVE_FURNACE)
 						break
 			
 			elif cell == p.CRAFTER:

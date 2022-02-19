@@ -7,6 +7,7 @@ extends TileMap
 var noise = OpenSimplexNoise.new()
 var bauxitenoise = OpenSimplexNoise.new()
 var beetnoise = OpenSimplexNoise.new()
+var widthnoise = OpenSimplexNoise.new()
 			
 var chunk_size = Vector2(16,16)
 var seed_ = 0
@@ -20,6 +21,11 @@ func _ready():
 	noise.period = 30
 	noise.persistence = 0.5
 	noise.lacunarity = 2
+	widthnoise.seed = seed_+4
+	widthnoise.octaves = 5
+	widthnoise.period = 200
+	widthnoise.persistence = 0.5
+	widthnoise.lacunarity = 2
 	bauxitenoise.seed = seed_+2
 	bauxitenoise.octaves = 5
 	bauxitenoise.period = 500
@@ -39,7 +45,8 @@ func generate(cx,cy):
 			var ly = chunk_size.y*cy+y
 			var cell = -1
 			
-			var noiseval = abs(noise.get_noise_2d(lx,ly))
+			var widthnoiseval = widthnoise.get_noise_2d(lx,ly)*0.5
+			var noiseval = abs(noise.get_noise_2d(lx,ly)) + widthnoiseval
 			var bauxitenoiseval = bauxitenoise.get_noise_2d(lx,ly)
 			var beetnoiseval = beetnoise.get_noise_2d(lx,ly)
 			
@@ -53,6 +60,11 @@ func generate(cx,cy):
 			if bauxitenoiseval - beetnoiseval + rand_range(-1,1) > 1.2:
 				cell = get_parent().POTATO
 			
+			if beetnoiseval - bauxitenoiseval - noiseval + rand_range(-2,2) > 3:
+				cell = get_parent().PALLADIUM
+			
+			if beetnoiseval + bauxitenoiseval + widthnoiseval + rand_range(-2,2) > 3:
+				cell = get_parent().MERCURY
 			
 			if randf() < 0.0001:
 				cell = get_parent().STAIRS

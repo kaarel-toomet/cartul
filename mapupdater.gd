@@ -103,7 +103,7 @@ func update_smell():
 				#dir = posmod(dir+1, 4)
 				var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y) + dirs[dir]) )/2
 				val *= player_smell_decay
-			
+				#val = max(0, val-20)
 				buffer.set_cell(x,y, val)
 	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
 		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
@@ -175,7 +175,7 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.breakto[p.INACTIVEFURNACE] and l == p.ALUMINIUM and u == p.ASDF and r == p.ASDF:
+				elif d == p.breakto[p.INACTIVEFURNACE] and l == p.ALUMINIUM and u == p.PALLADIUM and r == p.ASDF:
 					buffer.set_cell(x,y+1,p.INACTIVEFURNACE)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
@@ -187,7 +187,7 @@ func update_tiles():
 					buffer.set_cell(x+1,y,p.breakto[r])
 				
 			
-			elif randf() < 0.00001 and cell == p.NONE and p.map_id != 2:
+			elif randf() < 0.000005 and cell == p.NONE and p.map_id != 2:
 				buffer.set_cell(x,y,p.ERROR)
 					
 					
@@ -205,10 +205,15 @@ func update_tiles():
 						nsmells[dirs.find(dir)] = smell
 						
 				var maxsmell = nsmells.max()
-				 
+				var remove = []
+				
 				for cdir in cdirs:
 					if nsmells[cdir] != maxsmell:
-						cdirs.remove(cdir)
+						#cdirs.remove(cdir)
+						remove.append(cdir)
+				
+				for rdir in remove:
+					cdirs.remove(cdirs.find(rdir))
 				
 				
 				if len(cdirs) != 0:

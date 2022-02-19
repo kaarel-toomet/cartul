@@ -30,7 +30,7 @@ func _process(_delta):
 		#print("dddddd")
 		main.monster_num -= 1
 		main.get_node("ui").get_node("ScrollContainer").get_node("hotbar").get_item(
-			main.MONSTERPART, 1
+			main.MONSTER_PART, 1
 		)
 		queue_free()
 	

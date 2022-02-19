@@ -50,7 +50,7 @@ var dir_dict = []
 func _ready():
 	p = get_parent() # main node
 	
-	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
+	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER,p.MONSTER_PART]  ## things that errors can move through
 	
 	for _dir in range(num_dirs):
 		dir_dict.append(0)
@@ -60,8 +60,8 @@ func _ready():
 	#mutex = Mutex.new()
 	
 	#thread.start(self, "update_smell")
-	block_smell = [p.ASDF, p.BOX, p.BAUXITE, p.ALUMINIUM, p.BEETROOT, p.CRAFTER, p.ACTIVEFURNACE, p.INACTIVEFURNACE,
-				   p.MERCURY, p.PALLADIUM]
+	block_smell = [p.ASDF, p.BOX, p.BAUXITE, p.ALUMINIUM, p.BEETROOT, p.CRAFTER, p.ACTIVE_FURNACE, p.INACTIVE_FURNACE,
+				   p.MERCURY, p.PALLADIUM, p.STOVE]
 
 
 func update_smell():
@@ -145,18 +145,22 @@ func update_tiles():
 						buffer.set_cellv(c, p.breakto[p.BEETROOT])
 						break
 					
-			elif cell == p.INACTIVEFURNACE:
+			elif cell == p.INACTIVE_FURNACE:
 				for dir in dirs:
 					if map.get_cellv(c+dir) == p.BEETROOT:
 						buffer.set_cellv(c+dir, p.breakto[p.BEETROOT])
-						buffer.set_cellv(c, p.ACTIVEFURNACE)
+						buffer.set_cellv(c, p.ACTIVE_FURNACE)
 						break
 			
-			elif cell == p.ACTIVEFURNACE:
+			elif cell == p.ACTIVE_FURNACE:
 				for dir in dirs:
 					if map.get_cellv(c+dir) == p.BAUXITE:
 						buffer.set_cellv(c+dir, p.ALUMINIUM)
-						buffer.set_cellv(c, p.INACTIVEFURNACE)
+						buffer.set_cellv(c, p.INACTIVE_FURNACE)
+						break
+					if map.get_cellv(c+dir) == p.RAW_MONSTER_BRICK:
+						buffer.set_cellv(c+dir, p.ALUMINIUM)
+						buffer.set_cellv(c, p.MONSTER_BRICK)
 						break
 			
 			elif cell == p.CRAFTER:
@@ -175,13 +179,23 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
-				elif d == p.breakto[p.INACTIVEFURNACE] and l == p.ALUMINIUM and u == p.PALLADIUM and r == p.ASDF:
-					buffer.set_cell(x,y+1,p.INACTIVEFURNACE)
+				elif d == p.breakto[p.INACTIVE_FURNACE] and l == p.ALUMINIUM and u == p.PALLADIUM and r == p.ASDF:
+					buffer.set_cell(x,y+1,p.INACTIVE_FURNACE)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
 				elif d == p.breakto[p.ROTATOR_CCW] and l == p.ALUMINIUM and u == p.POTATO and r == p.ALUMINIUM:
 					buffer.set_cell(x,y+1,p.ROTATOR_CCW)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.RAW_MONSTER_BRICK] and l == p.MONSTER_PART and u == p.MONSTER_PART and r == p.MONSTER_PART:
+					buffer.set_cell(x,y+1,p.RAW_MONSTER_BRICK)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.STOVE] and l == p.MONSTER_BRICK and u == p.MONSTER_BRICK and r == p.FURNACE:
+					buffer.set_cell(x,y+1,p.STOVE)
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])

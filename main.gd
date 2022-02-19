@@ -15,15 +15,15 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 22
+var max_item_id = 25
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
 					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1,
-					  19:-1, 20:-1, 21:-1, 22:-1}
+					  19:-1, 20:-1, 21:-1, 22:-1, 23:-1, 24:-1, 25:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
 					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5, 18:5,
-					  19:5, 20:5, 21:5, 22:5}
+					  19:5, 20:5, 21:5, 22:5, 23:5, 24:5, 25:24}
 var breakto = normal_breakto
 
 
@@ -48,15 +48,20 @@ const ALUMINIUM = 10
 const BEETROOT = 11
 const CRAFTER = 12
 const GOLD = 13
-const ACTIVEFURNACE = 14
-const INACTIVEFURNACE = 15
+const ACTIVE_FURNACE = 14
+const INACTIVE_FURNACE = 15
 const MERCURY = 16
 const PALLADIUM = 17
-const MONSTERPART = 18
+const MONSTER_PART = 18
 const ERROR = 19
 const POTATO = 20
 const ROTATOR_CCW = 21
 const ROTATOR_CW = 22
+const RAW_MONSTER_BRICK = 23
+const MONSTER_BRICK = 24
+const STOVE = 25
+
+
 
 var names = {
 	-1:"tile_none",
@@ -82,7 +87,10 @@ var names = {
 	19:"tile_error",
 	20:"tile_potato",
 	21:"tile_rotator_cw",
-	22:"tile_rotator_ccw"
+	22:"tile_rotator_ccw",
+	23:"tile_raw_monster_brick",
+	24:"tile_monster_brick",
+	25:"tile_stove"
 }
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
@@ -96,7 +104,8 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/mercury.png"), preload("res://assets/palladium.png"),
 				preload("res://assets/monsterpart.png"), preload("res://assets/error.png"),
 				preload("res://assets/potato.png"), preload("res://assets/rotator_ccw.png"),
-				preload("res://assets/rotator_cw.png"), null]
+				preload("res://assets/rotator_cw.png"), preload("res://assets/rawmonsterbrick.png"),
+				preload("res://assets/monsterbrick.png"), preload("res://assets/stove.png"), null]
 
 """
   tile addition checklist
@@ -110,7 +119,6 @@ if needed:
 add to no_spawning_on in mobspawning.gd
 add to block_smell in mapupdater.gd
 """
-
 
 
 

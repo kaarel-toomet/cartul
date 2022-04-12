@@ -19,7 +19,7 @@ var update_timer = 1
 
 var aluminium_beet_smelting_chance = 0.05
 #var furnace_deactivation_chance = 0.5
-var player_smell_diffusion = 1
+var player_smell_diffusion = 0.5
 var player_smell_decay = 0.85
 var error_movable = []# = [p.NONE,p.GRASS,p.SAND,p.WATER]  ## things that errors can move through
 
@@ -73,18 +73,11 @@ func update_smell():
 	
 	map = p.map
 	psmell = map.get_node("psmell")
-	#buffer = map.get_node("buffer")
-	#buffer2 = map.get_node("buffer2")
+	
 	player = p.get_node("player")
-	#print(player)
-	#while !thread_should_exit:
-	#semaphore.wait()
-	#print("5aaaaa")
-	#print(player.position)
+	
 	playercx = p.chunk_size.x*floor(player.position.x / p.chunk_size.x / p.tile_size.x / p.scale.x)
-	#print("6aaaaaaaaa") 
 	playercy = p.chunk_size.y*floor(player.position.y / p.chunk_size.y / p.tile_size.y / p.scale.y)
-	#print("6bbbbbbbbbb")
 	px = floor(p.get_node("player").position.x / p.tile_size.x / p.scale.x)
 	py = floor(p.get_node("player").position.y / p.tile_size.y / p.scale.y)
 	#print(psmell.get_cell(px,py))
@@ -96,19 +89,20 @@ func update_smell():
 	
 	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
 		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
-			buffer.set_cell(x,y, psmell.get_cell(x,y))
+			#buffer.set_cell(x,y, psmell.get_cell(x,y))
 			#dir = posmod(dir+1, 4)
 			dir = randi()%4
-			if randf() < player_smell_diffusion and !block_smell.has(map.get_cell(x,y)) and !block_smell.has(map.get_cellv(Vector2(x,y) + dirs[dir])):
+			if !block_smell.has(map.get_cell(x,y)) and !block_smell.has(map.get_cellv(Vector2(x,y) + dirs[dir])):
 				#dir = posmod(dir+1, 4)
-				var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y) + dirs[dir]) )/2
+				#var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y) + dirs[dir]) )/2
+				var val = ( psmell.get_cell(x,y) + psmell.get_cellv(Vector2(x,y)+dirs[dir])*player_smell_diffusion )/(1+player_smell_diffusion)
 				val *= player_smell_decay
 				#val = max(0, val-20)
-				buffer.set_cell(x,y, val)
-	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
-		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
-			psmell.set_cell(x,y,buffer.get_cell(x,y))
-			#buffer.set_cell(x,y,map.get_cell(x,y))
+				psmell.set_cell(x,y, val)
+#	for x in range(playercx - p.chunk_size.x*smell_r,  playercx + p.chunk_size.x*(smell_r) + 1):
+#		for y in range(playercy - p.chunk_size.y*smell_r,  playercy + p.chunk_size.y*(smell_r) + 1):
+#			psmell.set_cell(x,y,buffer.get_cell(x,y))
+#			#buffer.set_cell(x,y,map.get_cell(x,y))
 			
 
 
@@ -117,7 +111,7 @@ func update_tiles():
 	map = p.map
 	psmell = map.get_node("psmell")
 	buffer = map.get_node("buffer")
-	#buffer2 = map.get_node("buffer2")
+	
 	var playercx = p.chunk_size.x*floor(p.get_node("player").position.x / p.chunk_size.x / p.tile_size.x / p.scale.x)
 	var playercy = p.chunk_size.y*floor(p.get_node("player").position.y / p.chunk_size.y / p.tile_size.y / p.scale.y)
 	px = floor(p.get_node("player").position.x / p.tile_size.x / p.scale.x)

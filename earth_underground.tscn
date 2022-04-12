@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://earth_underground.gd" type="Script" id=2]
+[ext_resource path="res://gradient_tiles.tres" type="TileSet" id=3]
 
 [node name="earth_underground" type="TileMap"]
 tile_set = ExtResource( 1 )
@@ -13,6 +14,7 @@ script = ExtResource( 2 )
 format = 1
 
 [node name="psmell" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 16, 16 )
 format = 1
 

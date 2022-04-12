@@ -7,6 +7,8 @@ var main
 
 var no_spawning_on = []
 
+var chance = 0.0001
+
 
 func _ready():
 	
@@ -23,7 +25,9 @@ func _process(_delta):
 	if main.map_id == 2: return
 	if main.monster_num >= main.monster_max: return
 	
-	if randf() < 0.001:
+	if main.map_id == 1: chance = 0.002
+	
+	if randf() < chance:
 		var dx = rand_range(-main.scale.x*main.tile_size.x*main.chunk_size.x*3,
 							 main.scale.x*main.tile_size.x*main.chunk_size.x*3)
 		var dy = rand_range(-main.scale.y*main.tile_size.y*main.chunk_size.y*3,

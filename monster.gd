@@ -46,6 +46,7 @@ func _process(_delta):
 func _on_Area2D_mouse_entered():
 	get_parent().get_parent().mouse_on_monster = true
 	mousein = true
+	#print("kala")
 
 
 func _on_Area2D_mouse_exited():

@@ -83,8 +83,10 @@ func _process(_delta):
 	
 	if get_parent().map.get_cellv(map_pos) == get_parent().WATER:
 		speed = base_speed/2.0
+	elif get_parent().map.get_cellv(map_pos) == get_parent().RAW_MONSTER_BRICK:
+		speed = base_speed*1.25
 	elif get_parent().map.get_cellv(map_pos) == get_parent().MONSTER_BRICK:
-		speed = base_speed*2
+		speed = base_speed*1.5
 	else:
 		speed = base_speed
 	

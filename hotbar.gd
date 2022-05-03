@@ -132,10 +132,10 @@ func _process(_delta):  #. or E by default
 			get_item(main.CRAFTER,1)
 		
 		if tiles[selected] == main.ROTATOR_CCW: # flip rotator
-			lose_item(main.ROTATOR_CCW,5)
+			lose_item(main.ROTATOR_CCW,1)
 			get_item(main.ROTATOR_CW,1)
 		if tiles[selected] == main.ROTATOR_CW: # flip rotator
-			lose_item(main.ROTATOR_CW,5)
+			lose_item(main.ROTATOR_CW,1)
 			get_item(main.ROTATOR_CCW,1)
 		#elif tiles[selected] == 5: # frame → editor
 		#	lose_item(main.FRAME,1)

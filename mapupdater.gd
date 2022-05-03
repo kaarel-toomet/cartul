@@ -141,18 +141,18 @@ func update_tiles():
 					
 			elif cell == p.INACTIVE_FURNACE:
 				for dir in dirs:
-					if map.get_cellv(c+dir) == p.BEETROOT:
+					if map.get_cellv(c+dir) == p.BEETROOT and buffer.get_cellv(c+dir) == p.BEETROOT:
 						buffer.set_cellv(c+dir, p.breakto[p.BEETROOT])
 						buffer.set_cellv(c, p.ACTIVE_FURNACE)
 						break
 			
 			elif cell == p.ACTIVE_FURNACE:
 				for dir in dirs:
-					if map.get_cellv(c+dir) == p.BAUXITE:
+					if map.get_cellv(c+dir) == p.BAUXITE and buffer.get_cellv(c+dir) == p.BAUXITE:
 						buffer.set_cellv(c+dir, p.ALUMINIUM)
 						buffer.set_cellv(c, p.INACTIVE_FURNACE)
 						break
-					if map.get_cellv(c+dir) == p.RAW_MONSTER_BRICK:
+					if map.get_cellv(c+dir) == p.RAW_MONSTER_BRICK and buffer.get_cellv(c+dir) == p.RAW_MONSTER_BRICK:
 						buffer.set_cellv(c+dir, p.MONSTER_BRICK)
 						buffer.set_cellv(c, p.INACTIVE_FURNACE)
 						break

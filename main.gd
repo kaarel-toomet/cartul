@@ -86,8 +86,8 @@ var names = {
 	18:"tile_monster_part",
 	19:"tile_error",
 	20:"tile_potato",
-	21:"tile_rotator_cw",
-	22:"tile_rotator_ccw",
+	21:"tile_rotator_ccw",
+	22:"tile_rotator_cw",
 	23:"tile_raw_monster_brick",
 	24:"tile_monster_brick",
 	25:"tile_stove"

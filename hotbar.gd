@@ -119,6 +119,7 @@ func remove_slot():
 	amounts.remove(len(amounts)-1)
 	tiles.remove(len(tiles)-1)
 	slots.remove(len(slots)-1)
+	if selected >= slot_num: selected -= 1
 	
 	#print(slots)
 	
@@ -153,9 +154,9 @@ func _process(_delta):  #. or E by default
 		#emit_signal("mouse_exit")
 		#print("awyfg")
 	if get_global_rect().has_point(get_viewport().get_mouse_position()): mousein = true
-	#print(slots)
-	if amounts[-1] == 0 and amounts[-2] == 0 and slot_num > 4: remove_slot()
-	if amounts[-1] != 0: add_slot()
+	#print(amounts)
+	if amounts[len(amounts)-1] == 0 and amounts[len(amounts)-2] == 0 and slot_num > 4: remove_slot()
+	elif amounts[-1] != 0: add_slot()
 	get_parent().get_parent().get_node("Label2").text = get_parent().get_parent().get_parent().names[tiles[selected]]
 		
 		

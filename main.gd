@@ -20,10 +20,12 @@ var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
 					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1,
-					  19:-1, 20:-1, 21:-1, 22:-1, 23:-1, 24:-1, 25:-1}
+					  19:-1, 20:-1, 21:-1, 22:-1, 23:-1, 24:-1, 25:-1, 26:-1, 27:-1,
+					  28:-1, 29:-1, 30:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
 					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5, 18:5,
-					  19:5, 20:5, 21:5, 22:5, 23:5, 24:5, 25:24}
+					  19:5, 20:5, 21:5, 22:5, 23:5, 24:5, 25:24, 26:5, 27:5, 28:5,
+					  29:5, 30:5}
 var breakto = normal_breakto
 
 
@@ -60,6 +62,11 @@ const ROTATOR_CW = 22
 const RAW_MONSTER_BRICK = 23
 const MONSTER_BRICK = 24
 const STOVE = 25
+const KNIFE = 26
+const POTATO_PEELS = 27
+const PEELED_POTATO = 28
+const BOILED_POTATO = 29
+const POT = 30
 
 
 
@@ -90,7 +97,12 @@ var names = {
 	22:"tile_rotator_cw",
 	23:"tile_raw_monster_brick",
 	24:"tile_monster_brick",
-	25:"tile_stove"
+	25:"tile_stove",
+	26:"tile_knife",
+	27:"tile_potato_peels",
+	28:"tile_peeled_potato",
+	29:"tile_boiled_potato",
+	30:"tile_pot"
 }
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
@@ -105,7 +117,10 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/monsterpart.png"), preload("res://assets/error.png"),
 				preload("res://assets/potato.png"), preload("res://assets/rotator_ccw.png"),
 				preload("res://assets/rotator_cw.png"), preload("res://assets/rawmonsterbrick.png"),
-				preload("res://assets/monsterbrick.png"), preload("res://assets/stove.png"), null]
+				preload("res://assets/monsterbrick.png"), preload("res://assets/stove.png"),
+				preload("res://assets/knife.png"), preload("res://assets/potato_peels.png"),
+				preload("res://assets/peeled_potato.png"), preload("res://assets/boiled_potato.png"),
+				preload("res://assets/boiled_potato.png"), preload("res://assets/pot.png"), null]
 
 """
   tile addition checklist

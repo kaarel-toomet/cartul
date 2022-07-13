@@ -52,7 +52,7 @@ func generate(cx,cy):
 			
 			if noiseval >= 0.1:
 				cell = get_parent().ASDF
-				if bauxitenoiseval > 0.53: cell = get_parent().BAUXITE
+				if bauxitenoiseval > 0.5: cell = get_parent().BAUXITE
 			
 			
 			if beetnoiseval > 0.43: cell = get_parent().BEETROOT
@@ -77,7 +77,7 @@ func generate(cx,cy):
 		for y in range(chunk_size.y):
 			var lx = chunk_size.x*cx+x
 			var ly = chunk_size.y*cy+y
-			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.1):
+			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.125):
 				for i in range(-4, 5):
 					for j in range(-4, 5):
 						if abs(i)+abs(j)+randi()%5-2 < 3*(bauxitenoise.get_noise_2d(lx,ly)-0.2) and get_cell(lx+i,ly+j) == get_parent().ASDF:

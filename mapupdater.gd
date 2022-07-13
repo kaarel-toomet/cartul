@@ -50,7 +50,7 @@ var dir_dict = []
 func _ready():
 	p = get_parent() # main node
 	
-	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER,p.MONSTER_PART,p.RAW_MONSTER_BRICK]  ## things that errors can move through
+	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER,p.POTATO,p.MONSTER_PART,p.RAW_MONSTER_BRICK]  ## things that errors can move through
 	
 	for _dir in range(num_dirs):
 		dir_dict.append(0)

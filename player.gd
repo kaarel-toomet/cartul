@@ -94,7 +94,7 @@ func _process(_delta):
 		speed = base_speed
 	
 	if get_parent().map.get_cellv(map_pos) == get_parent().ERROR:
-		health -= 0.1
+		health -= 0.2
 #	if Input.is_action_just_pressed("E") and get_parent().map.get_cellv(map_pos) == 4 and !open_override:
 #		get_parent().data_coordinates = get_parent().data_coordinates.duplicate(true)
 #		get_parent().tile_data = get_parent().tile_data.duplicate(true)

@@ -70,6 +70,9 @@ func _process(_delta):
 		position = spawnpoint
 		health = 30
 	
+	if health > 30:
+		health = 30
+	
 	if is_nan(position.x) or is_nan(position.y):
 		position = Vector2(0,0)
 	

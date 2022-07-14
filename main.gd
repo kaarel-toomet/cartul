@@ -15,7 +15,7 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 25
+var max_item_id = 30
 var stack_limit = 2147483647
 
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
@@ -120,7 +120,7 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/monsterbrick.png"), preload("res://assets/stove.png"),
 				preload("res://assets/knife.png"), preload("res://assets/potato_peels.png"),
 				preload("res://assets/peeled_potato.png"), preload("res://assets/boiled_potato.png"),
-				preload("res://assets/boiled_potato.png"), preload("res://assets/pot.png"), null]
+				preload("res://assets/pot.png"), null]
 
 """
   tile addition checklist

@@ -138,6 +138,10 @@ func _process(_delta):  #. or E by default
 		if tiles[selected] == main.ROTATOR_CW: # flip rotator
 			lose_item(main.ROTATOR_CW,1)
 			get_item(main.ROTATOR_CCW,1)
+		
+		if tiles[selected] == main.BOILED_POTATO: # eat potato
+			lose_item(main.BOILED_POTATO,1)
+			main.get_node("player").health += 15
 		#elif tiles[selected] == 5: # frame → editor
 		#	lose_item(main.FRAME,1)
 		#	get_item(main.EDITOR,1)

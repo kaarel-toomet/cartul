@@ -193,12 +193,27 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.POT] and l == p.ALUMINIUM and u == p.FRAME and r == p.FRAME:
+					buffer.set_cell(x,y+1,p.POT)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
 				
 			
 			elif randf() < 0.000005 and cell == p.NONE and p.map_id != 2:
 				buffer.set_cell(x,y,p.ERROR)
 					
 					
+			elif cell == p.STOVE:
+				
+				if map.get_cell(x,y+1) == p.BEETROOT and buffer.get_cell(x,y+1) == p.BEETROOT:
+					if map.get_cell(x,y-1) == p.POT:
+						if map.get_cell(x,y-2) == p.WATER and map.get_cell(x,y-3) == p.POTATO:
+							buffer.set_cell(x,y+1,p.breakto[p.BEETROOT])
+							buffer.set_cell(x,y-2,p.BOILED_POTATO)
+							buffer.set_cell(x,y-3,p.breakto[p.POTATO])
+							
+				
 			elif cell == p.ERROR:
 				
 				var cdirs = []

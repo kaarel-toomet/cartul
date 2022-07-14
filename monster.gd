@@ -37,9 +37,13 @@ func _process(_delta):
 	map_y = floor(position.y/main.scale.y/main.tile_size.y)
 	
 	
-	
+	# Errors kill monsters
 	if main.map.get_cell(map_x, map_y) == main.ERROR:
 		health -= 0.1
+	
+	# Slowly die when inside blocks, e.g. stone
+	elif main.map.get_cell(map_x, map_y) in main.has_collision:
+		health -= 0.01
 
 
 

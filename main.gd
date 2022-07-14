@@ -18,6 +18,10 @@ var mouse_on_monster = false
 var max_item_id = 30
 var stack_limit = 2147483647
 
+# The block that goes under this block (block:under). A block can only be placed on this
+# and this remains when the block is broken. player_breakto is used when editing the player,
+# normal_breakto everywhere else.
+
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
 					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1,
 					  19:-1, 20:-1, 21:-1, 22:-1, 23:-1, 24:-1, 25:-1, 26:-1, 27:-1,
@@ -34,6 +38,8 @@ var breakto = normal_breakto
 var monster_num = 0
 var monster_max = 100
 
+var has_collision = [ASDF, BOX, BAUXITE, ALUMINIUM, BEETROOT, CRAFTER, ACTIVE_FURNACE,
+					 INACTIVE_FURNACE, ROTATOR_CCW, ROTATOR_CW, STOVE, POT]
 
 const NONE = -1
 const ASDF = 0
@@ -125,7 +131,7 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 """
   tile addition checklist
 image to assets folder
-add to tileset
+add to tileset, with collision if needed
 add to constants, breaktos and names here
 add texture to textures dict here
 increase max_item_id here
@@ -133,6 +139,7 @@ add to languages (text.csv file)
 if needed:
 add to no_spawning_on in mobspawning.gd
 add to block_smell in mapupdater.gd
+add to has_collision here
 """
 
 

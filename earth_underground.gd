@@ -55,15 +55,15 @@ func generate(cx,cy):
 				if bauxitenoiseval > 0.5: cell = get_parent().BAUXITE
 			
 			
-			if beetnoiseval > 0.43: cell = get_parent().BEETROOT
+			if beetnoiseval > 0.4: cell = get_parent().BEETROOT
 			
 			if bauxitenoiseval - beetnoiseval + rand_range(-1,1) > 1.2:
 				cell = get_parent().POTATO
 			
-			if beetnoiseval - bauxitenoiseval - noiseval + rand_range(-2,2) > 3.25:
+			if beetnoiseval - bauxitenoiseval - noiseval + rand_range(-2,2) > 3:
 				cell = get_parent().PALLADIUM
 			
-			if beetnoiseval + bauxitenoiseval + widthnoiseval + rand_range(-2,2) > 3.25:
+			if beetnoiseval + bauxitenoiseval + widthnoiseval + rand_range(-2,2) > 3:
 				cell = get_parent().MERCURY
 			
 			if randf() < 0.0001:
@@ -77,7 +77,7 @@ func generate(cx,cy):
 		for y in range(chunk_size.y):
 			var lx = chunk_size.x*cx+x
 			var ly = chunk_size.y*cy+y
-			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.125):
+			if randf() < 0.01*(bauxitenoise.get_noise_2d(lx,ly)+0.2):
 				for i in range(-4, 5):
 					for j in range(-4, 5):
 						if abs(i)+abs(j)+randi()%5-2 < 3*(bauxitenoise.get_noise_2d(lx,ly)-0.2) and get_cell(lx+i,ly+j) == get_parent().ASDF:

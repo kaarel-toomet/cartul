@@ -258,9 +258,19 @@ func update_tiles():
 					
 			elif cell == p.MERCURY and buffer.get_cell(x,y) == p.MERCURY:
 				
-				for dir in dirs:
-					if map.get_cellv(c+dir) == p.GOLD and buffer.get_cellv(c+dir) == p.GOLD:
+				var surrounding = []
+				
+				for dir in dirs_moore:
+					if map.get_cellv(c+dir) == buffer.get_cellv(c+dir):
+						surrounding.append(map.get_cellv(c+dir))
+					else:
+						surrounding.append(-2)
+				
+				if surrounding.has(p.GOLD) and surrounding.count(p.breakto[p.GOLD]) == 7:
+					for dir in dirs_moore:
 						buffer.set_cellv(c+dir,p.SOAP)
+					#if map.get_cellv(c+dir) == p.GOLD and buffer.get_cellv(c+dir) == p.GOLD:
+					#	buffer.set_cellv(c+dir,p.SOAP)
 				
 				
 				if  randf() < 10.9: # Move

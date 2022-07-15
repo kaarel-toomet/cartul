@@ -299,6 +299,14 @@ func update_tiles():
 							buffer.set_cellv(c+dirs[posmod(i+1,num_dirs)], ncell)
 					
 					
+			elif cell == p.WASHING_MACHINE:
+				if map.get_cell(x-1,y) == p.WATER and map.get_cell(x+1,y) == p.SOAP and buffer.get_cell(x-1,y) == p.WATER and buffer.get_cell(x+1,y) == p.SOAP:
+					if map.get_cell(x,y-1) == p.BEETROOT and map.get_cell(x,y+1) == p.breakto[p.BEETROOT]:
+						buffer.set_cell(x-1,y,p.breakto[p.WATER])
+						buffer.set_cell(x+1,y,p.breakto[p.SOAP])
+						buffer.set_cell(x,y+1,p.BEETROOT)
+						
+			
 			
 				
 #				if dir == 0 and error_movable.has(d) and buffer.get_cell(x,y+1) != p.ERROR:

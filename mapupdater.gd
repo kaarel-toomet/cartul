@@ -49,8 +49,9 @@ var dir_dict = []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	p = get_parent() # main node
-	
-	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER,p.POTATO,p.MONSTER_PART,p.RAW_MONSTER_BRICK]  ## things that errors can move through
+	## things that errors can move through
+	error_movable = [p.NONE,p.GRASS,p.SAND,p.WATER,p.POTATO,p.MONSTER_PART,p.RAW_MONSTER_BRICK,
+					 p.STOVE, p.POT, p.SOAP]  
 	
 	for _dir in range(num_dirs):
 		dir_dict.append(0)
@@ -198,6 +199,16 @@ func update_tiles():
 					buffer.set_cell(x-1,y,p.breakto[l])
 					buffer.set_cell(x,y-1,p.breakto[u])
 					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.BEETROOT_DRUM] and l == p.BEETROOT and u == p.BEETROOT and r == p.FRAME:
+					buffer.set_cell(x,y+1,p.BEETROOT_DRUM)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
+				elif d == p.breakto[p.WASHING_MACHINE] and l == p.BEETROOT_DRUM and u == p.ROTATOR_CCW and r == p.FRAME:
+					buffer.set_cell(x,y+1,p.WASHING_MACHINE)
+					buffer.set_cell(x-1,y,p.breakto[l])
+					buffer.set_cell(x,y-1,p.breakto[u])
+					buffer.set_cell(x+1,y,p.breakto[r])
 				
 			
 			elif randf() < 0.000005 and cell == p.NONE and p.map_id != 2:
@@ -249,7 +260,7 @@ func update_tiles():
 				
 				for dir in dirs:
 					if map.get_cellv(c+dir) == p.GOLD and buffer.get_cellv(c+dir) == p.GOLD:
-						buffer.set_cellv(c+dir,p.BOILED_POTATO)
+						buffer.set_cellv(c+dir,p.SOAP)
 				
 				
 				if  randf() < 10.9: # Move

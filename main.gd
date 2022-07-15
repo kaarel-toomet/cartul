@@ -15,7 +15,7 @@ var paused = false
 var mouse_on_monster = false
 
 
-var max_item_id = 30
+var max_item_id = 33
 var stack_limit = 2147483647
 
 # The block that goes under this block (block:under). A block can only be placed on this
@@ -25,11 +25,11 @@ var stack_limit = 2147483647
 var normal_breakto = {-1:-1, 0:2, 1:2, 2:3, 3:-1, 4:2, 5:-1, 6:2, 7:-1, 8:2, 9:2,
 					  10:2, 11:0,  12:-1, 13:2, 14:-1, 15:-1, 16:-1, 17:-1, 18:-1,
 					  19:-1, 20:-1, 21:-1, 22:-1, 23:-1, 24:-1, 25:-1, 26:-1, 27:-1,
-					  28:-1, 29:-1, 30:-1}
+					  28:-1, 29:-1, 30:-1, 31:2, 32:-1, 33:-1}
 var player_breakto = {-1:-1, 0:5, 1:5, 2:5, 3:5,  4:5, 5:-1, 6:2, 7:-1, 8:5, 9:5,
 					  10:5, 11:10, 12:5,  13:5, 14:5, 15:5, 16:5, 17:5, 18:5,
 					  19:5, 20:5, 21:5, 22:5, 23:5, 24:5, 25:24, 26:5, 27:5, 28:5,
-					  29:5, 30:5}
+					  29:5, 30:5, 31:5, 32:-1, 33:-1}
 var breakto = normal_breakto
 
 
@@ -39,7 +39,8 @@ var monster_num = 0
 var monster_max = 100
 
 var has_collision = [ASDF, BOX, BAUXITE, ALUMINIUM, BEETROOT, CRAFTER, ACTIVE_FURNACE,
-					 INACTIVE_FURNACE, ROTATOR_CCW, ROTATOR_CW, STOVE, POT]
+					 INACTIVE_FURNACE, ROTATOR_CCW, ROTATOR_CW, STOVE, POT, SOAP,
+					 WASHING_MACHINE, BEETROOT_DRUM]
 
 const NONE = -1
 const ASDF = 0
@@ -73,6 +74,9 @@ const POTATO_PEELS = 27
 const PEELED_POTATO = 28
 const BOILED_POTATO = 29
 const POT = 30
+const SOAP = 31
+const WASHING_MACHINE = 32
+const BEETROOT_DRUM = 33
 
 
 
@@ -108,7 +112,10 @@ var names = {
 	27:"tile_potato_peels",
 	28:"tile_peeled_potato",
 	29:"tile_boiled_potato",
-	30:"tile_pot"
+	30:"tile_pot",
+	31:"tile_soap",
+	32:"tile_washing_machine",
+	33:"tile_beetroot_drum"
 }
 
 var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.png"),
@@ -126,7 +133,8 @@ var textures = [preload("res://assets/asdf.png"), preload("res://assets/grass.pn
 				preload("res://assets/monster_brick.png"), preload("res://assets/stove.png"),
 				preload("res://assets/knife.png"), preload("res://assets/potato_peels.png"),
 				preload("res://assets/peeled_potato.png"), preload("res://assets/boiled_potato.png"),
-				preload("res://assets/pot.png"), null]
+				preload("res://assets/pot.png"), preload("res://assets/soap.png"),
+				preload("res://assets/washing_machine.png"), preload("res://assets/beetroot_drum.png"), null]
 
 """
   tile addition checklist

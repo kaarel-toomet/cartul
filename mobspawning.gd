@@ -16,7 +16,7 @@ func _ready():
 	no_spawning_on = [main.ASDF,main.BOX,main.FRAME,main.BAUXITE,main.ALUMINIUM,main.BEETROOT,
 					  main.CRAFTER,main.ACTIVE_FURNACE, main.INACTIVE_FURNACE, main.MERCURY,
 					  main.POTATO, main.MONSTER_BRICK, main.KNIFE, main.PEELED_POTATO,
-					  main.POTATO_PEELS, main.BOILED_POTATO, main.POT]
+					  main.POTATO_PEELS, main.BOILED_POTATO, main.POT, main.SOAP]
 
 
 

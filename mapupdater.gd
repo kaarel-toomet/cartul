@@ -243,7 +243,31 @@ func update_tiles():
 					dir = dirs[cdirs[randi()%len(cdirs)]]
 					buffer.set_cellv(c, map.get_cellv(c+dir))
 					buffer.set_cellv(c+dir, p.ERROR)
+					
+					
+			elif cell == p.MERCURY and buffer.get_cell(x,y) == p.MERCURY:
 				
+				for dir in dirs:
+					if map.get_cellv(c+dir) == p.GOLD and buffer.get_cellv(c+dir) == p.GOLD:
+						buffer.set_cellv(c+dir,p.BOILED_POTATO)
+				
+				
+				if  randf() < 10.9: # Move
+					var cdirs = []
+					#var nsmells = dir_dict.duplicate(true)
+					
+					
+					for dir in dirs_moore:
+						var tile = map.get_cellv(c+dir)
+						if error_movable.has(tile) and buffer.get_cellv(c+dir) == tile:
+							cdirs.append(dirs_moore.find(dir))
+						
+					if len(cdirs) != 0:
+						dir = dirs_moore[cdirs[randi()%len(cdirs)]]
+						buffer.set_cellv(c, map.get_cellv(c+dir))
+						buffer.set_cellv(c+dir, p.MERCURY)
+						
+			
 			
 			elif cell == p.ROTATOR_CCW:
 				for i in range(num_dirs):

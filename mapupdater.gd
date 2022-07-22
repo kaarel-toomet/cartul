@@ -17,7 +17,7 @@ var tick = 0
 
 var update_timer = 1
 
-var aluminium_beet_smelting_chance = 0.05
+var aluminium_beet_smelting_chance = 0.01
 #var furnace_deactivation_chance = 0.5
 var player_smell_diffusion = 0.5
 var player_smell_decay = 0.85
@@ -310,11 +310,16 @@ func update_tiles():
 					
 					
 			elif cell == p.WASHING_MACHINE:
-				if map.get_cell(x-1,y) == p.WATER and map.get_cell(x+1,y) == p.SOAP and buffer.get_cell(x-1,y) == p.WATER and buffer.get_cell(x+1,y) == p.SOAP:
+				if map.get_cell(x-1,y) == p.WATER and map.get_cell(x+1,y) == p.SOAP and buffer.get_cell(x-1,y) == p.WATER and buffer.get_cell(x+1,y) == p.SOAP and map.get_cell(x,y-1) == buffer.get_cell(x,y-1):
 					if map.get_cell(x,y-1) == p.BEETROOT and map.get_cell(x,y+1) == p.breakto[p.BEETROOT]:
 						buffer.set_cell(x-1,y,p.breakto[p.WATER])
 						buffer.set_cell(x+1,y,p.breakto[p.SOAP])
 						buffer.set_cell(x,y+1,p.BEETROOT)
+					if map.get_cell(x,y-1) == p.POTATO and map.get_cell(x,y+1) == p.breakto[p.PEELED_POTATO]:
+						buffer.set_cell(x,y-1,p.breakto[p.POTATO])
+						buffer.set_cell(x-1,y,p.breakto[p.WATER])
+						buffer.set_cell(x+1,y,p.breakto[p.SOAP])
+						buffer.set_cell(x,y+1,p.PEELED_POTATO)
 						
 			
 			
